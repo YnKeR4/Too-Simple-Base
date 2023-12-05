@@ -1,6 +1,8 @@
 # Too-Simple-Base
-The sequel of the AYS Base
-Simpler and can be managed by server
+The sequel of the AYS Base, simpler and can be managed by server
+
+### Addon:
+#### https://steamcommunity.com/sharedfiles/filedetails/?id=3105827188
 
 ## Improvements:
 * Added iron sights;
