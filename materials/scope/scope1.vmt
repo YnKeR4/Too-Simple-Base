@@ -1,0 +1,8 @@
+unlitgeneric
+{
+$basetexture	"scope/scope1"
+$model 		1
+$translucent	1
+$ignorez		1
+$nofog		1
+}

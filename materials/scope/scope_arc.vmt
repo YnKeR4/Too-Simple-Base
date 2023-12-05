@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "scope/scope_arc"
+	$model 		1
+	$translucent	1
+	$ignorez		1
+	$nofog		1
+}
