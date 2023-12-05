@@ -1,13 +1,8 @@
 AddCSLuaFile()
 
-
 SWEP.Base = "weapon_base"
 SWEP.language = ( GetConVar( "gmod_language" ) )
 SWEP.PrintName = nil
-SWEP.PrintNameRus = nil
-if ( SWEP.language:GetString() == "ru" ) and SWEP.PrintNameRus != nil then
-	SWEP.PrintName = SWEP.PrintNameRus
-end
 SWEP.LuaName = ""
 SWEP.SelectIconPath = ""
 SWEP.Category = ""
@@ -204,7 +199,7 @@ function SWEP:PrimaryAttack()
 	bullet.Num = self.Primary.NumberofShots
 	bullet.Src = self.Owner:GetShootPos()
 	bullet.Dir = self.Owner:GetAimVector()
-	if self.ShowTracerInXChance >= 0 then
+	if self.ShowTracerInXChance != nil then
 		bullet.Tracer = self.ShowTracerInXChance
 	end
 	if self.ShowTracerInXChance == nil then
@@ -340,8 +335,8 @@ function SWEP:PrimaryAttack()
 		if self.Weapon:Clip1() >= 1 then
 			self.Idle = 0
 		end
-		if self.Weapon:Clip1() < 1 or self.Iron == 1 then
-			self.Idle = 2
+		if self.Weapon:Clip1() < 1 then
+			self.Idle = 1
 		end
 		self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 		if self.Iron == 0 then
@@ -647,7 +642,7 @@ function SWEP:Think()
 			end
 			self.Primary.SpreadTimer = CurTime() + 0.1
 		end
-		if self.Idle == 0 and self.IdleTimer > CurTime() and self.IdleTimer < CurTime() + 0.1 then
+		if self.Idle == 0 and self.IdleTimer > CurTime() and self.IdleTimer < CurTime() + 0.1 and self.Iron == 0 then
 			self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
 			self.Idle = 1
 		end
@@ -665,9 +660,14 @@ function SWEP:Think()
 			self.Weapon:SetNWInt( "text", "" )
 		end
 		if self.Sprint == 0 and self.Reloading == 0 and self.ReloadShot == 0 and self.Iron == 0 then
-			if self.Owner:KeyDown( IN_DUCK ) then
+			if self.Owner:KeyDown( IN_DUCK ) and self.ViewModelFlip == false then
 				self.Pos = self.WalkPos
 				self.Ang = self.WalkAng
+				self:SetRun( true, self.Owner )
+			end
+			if self.Owner:KeyDown( IN_DUCK ) and self.ViewModelFlip == true then
+				self.Pos = self.WalkPos * -1
+				self.Ang = self.WalkAng * -1
 				self:SetRun( true, self.Owner )
 			end
 			if self.Owner:KeyReleased( IN_DUCK ) then
@@ -901,7 +901,7 @@ SWEP.RunAng = nil
 SWEP.ScopeTexture = 0
 SWEP.Iron = 0
 SWEP.IronTimer = CurTime()
-SWEP.IronTime = 0.35
+SWEP.IronTime = 0.25
 SWEP.IronFOVMult = 1.45
 
 function SWEP:IronDisabler()
@@ -1001,6 +1001,10 @@ function SWEP:Initialize()
 	self.Reloading = 0
 	self.ReloadingTimer = CurTime()
 	self.UseFireMode = 0
+	if CLIENT then
+		self.WElements = table.FullCopy( self.WElements )
+		self:CreateModels(self.WElements)
+	end
 	local owner = self:GetOwner()
 	if (!owner:IsNPC()) then
 		self.TextTimer = CurTime() + 2.5
@@ -1013,10 +1017,8 @@ function SWEP:Initialize()
 		self:IronDisabler()
 		if CLIENT then
 			self.VElements = table.FullCopy( self.VElements )
-			self.WElements = table.FullCopy( self.WElements )
 			self.ViewModelBoneMods = table.FullCopy( self.ViewModelBoneMods )
 			self:CreateModels(self.VElements)
-			self:CreateModels(self.WElements)
 			if IsValid(self.Owner) then
 				local vm = self.Owner:GetViewModel()
 				if IsValid(vm) then
