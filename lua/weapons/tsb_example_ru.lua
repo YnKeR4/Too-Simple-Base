@@ -18,8 +18,6 @@ SWEP.WElements = {
 }
 
 SWEP.PrintName 					= "SPASAI-12"
-SWEP.PrintNameRus 				= nil	-- если пользователь использует русский язык (полезно для всяких пушек с русскими названиями)
--- you can delete this
 SWEP.Category 					= "TSB Example"
 SWEP.Slot 						= 3
 SWEP.Spawnable 					= true	-- её могут спаунить обычные люди
