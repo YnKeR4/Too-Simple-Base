@@ -10,11 +10,11 @@ Simpler and can be managed by server
 * Commands to manage the base (only in console);
 * and other small improvements...
 
-### Controls:
+## Controls:
 * E+R - to change the fire mode;
 * and... is that all?
 
-### Plans:
+## Plans:
 * Add a settings menu
 * Own HUD
 * Overheating System
