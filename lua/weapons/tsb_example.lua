@@ -23,8 +23,6 @@ SWEP.ViewModelBoneMods 			= {
 }
 
 SWEP.PrintName 					= "Heckler & Koch USP bro what the..."
-SWEP.PrintNameRus 				= nil	-- when someone uses russian language (полезно для всяких пушек с русскими названиями)
--- you can delete this
 SWEP.Category 					= "TSB Example"
 SWEP.Slot 						= 1
 SWEP.Spawnable 					= true	-- can spawn by normal people
