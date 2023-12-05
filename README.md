@@ -18,7 +18,6 @@ The sequel of the AYS Base, simpler and can be managed by server
 
 ## Plans:
 * Add a settings menu
-* Own HUD
 * Overheating System
 * Custom functions support
 
