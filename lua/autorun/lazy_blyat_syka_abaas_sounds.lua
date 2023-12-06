@@ -1,4 +1,3 @@
-
 if SERVER then
 
 	if GetConVar( "tsb_damage_multi" ) == nil then
@@ -21,8 +20,8 @@ if SERVER then
 		CreateConVar( "tsb_force_shoot_only_in_iron", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Shooting allowed only in iron sights", 0, 1 )
 	end
 
-	if GetConVar( "tsb_force_disable_iron" ) == nil then
-		CreateConVar( "tsb_force_disable_iron", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the iron sights", 0, 1 )
+	if GetConVar( "tsb_disable_text_at_spawn" ) == nil then
+		CreateConVar( "tsb_disable_text_at_spawn", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the text when the weapon is spawned.", 0, 1 )
 	end
 
 end
