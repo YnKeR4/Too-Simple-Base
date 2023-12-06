@@ -86,6 +86,10 @@ SWEP.Primary.SoundExtra = nil
 SWEP.Jam = 0
 SWEP.JamActive = 0
 
+function SWEP:AdjustMouseSensitivity()
+	return self.Weapon:GetNWString( "MouseSensitivity", 1 )
+end
+
 local damageMult = 1
 
 if GetConVar( "tsb_damage_multi" ) == nil then
@@ -378,9 +382,15 @@ function SWEP:PrimaryAttack()
 				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.Primary.StrenghtRecoil, 0, 0 ) )
 			end
 			self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber
-			if self.Primary.RealSpread >= self.Primary.Spread / 100 and self.Primary.RealSpread < self.Primary.Spread then
-				self.Primary.RealSpread = self.Primary.RealSpread + self.Primary.Spread / 250
-				self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber
+			if self.Primary.RealSpread >= self.Primary.Spread / 100 and self.Primary.RealSpread < self.Primary.Spread / 15 then
+				if self.Owner:KeyDown( IN_DUCK ) then
+					self.Primary.RealSpread = self.Primary.RealSpread + self.Primary.Spread / 450
+					self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber / 2
+				end
+				if !self.Owner:KeyDown( IN_DUCK ) then
+					self.Primary.RealSpread = self.Primary.RealSpread + self.Primary.Spread / 300
+					self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber
+				end
 			end
 			if self.Primary.ViewPunchUp != nil then
 				self.Owner:ViewPunch( Angle( -1 * self.Primary.ViewPunchUp, 0, 0 ) )
@@ -425,9 +435,15 @@ function SWEP:PrimaryAttack()
 				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.Primary.StrenghtRecoil / 1.5, 0, 0 ) )
 			end
 			self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber
-			if self.Primary.RealSpread >= self.Primary.Spread / 100 and self.Primary.RealSpread < self.Primary.Spread then
-				self.Primary.RealSpread = self.Primary.RealSpread + self.Primary.Spread / 300
-				self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber
+			if self.Primary.RealSpread >= self.Primary.Spread / 100 and self.Primary.RealSpread < self.Primary.Spread / 25 then
+				if self.Owner:KeyDown( IN_DUCK ) then
+					self.Primary.RealSpread = self.Primary.RealSpread + self.Primary.Spread / 650
+					self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber / 3
+				end
+				if !self.Owner:KeyDown( IN_DUCK ) then
+					self.Primary.RealSpread = self.Primary.RealSpread + self.Primary.Spread / 400
+					self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber / 2
+				end
 			end
 			if self.Primary.ViewPunchUp != nil then
 				self.Owner:ViewPunch( Angle( -1 * self.Primary.ViewPunchUp / 2, 0, 0 ) )
@@ -445,7 +461,6 @@ function SWEP:PrimaryAttack()
 		self.Reloading = 0
 		self.ReloadingTimer = CurTime() + 0.1
 	end
-	self:PAC()
 end
 
 SWEP.MuzzleEffect = nil
@@ -493,7 +508,7 @@ function SWEP:Reload()
 				self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 				self:SetNextSecondaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 				self.Reloading = 1
-				self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+				self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration() - 0.25
 			end
 		end
 		if self.ShotgunReload == true then
@@ -535,24 +550,6 @@ function SWEP:ShotRelDisable()
 		self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration() + 0.5
 	end
 end
-
-local disableIron = 0
-
-if GetConVar( "tsb_force_disable_iron" ) == nil then
-	disableIron = 0
-	else
-	disableIron = GetConVar( "tsb_force_disable_iron" ):GetFloat()
-end
-
-function RefreshTheDIron(cvar, previous, new)
-	if GetConVar( "tsb_force_disable_iron" ) == nil then
-		disableIron = 0
-		else
-		disableIron = GetConVar( "tsb_force_disable_iron" ):GetFloat()
-	end
-end
-
-cvars.AddChangeCallback("tsb_force_disable_iron", RefreshTheDIron)
 
 function SWEP:Think()
 	local owner = self:GetOwner()
@@ -596,17 +593,17 @@ function SWEP:Think()
 		if self.Owner:IsOnGround() then
 			if self.Iron == 0 then
 				if self.Owner:GetVelocity():Length() <= 100 then
-					if self.Owner:KeyDown( IN_DUCK ) then
-						self.Primary.RealSpread = self.Primary.Spread / 125
+					if self.Owner:KeyDown( IN_DUCK ) and self.Primary.SpreadTimer <= CurTime() then
+						self.Primary.RealSpread = self.Primary.Spread / 200
 					end
 					if self.Primary.SpreadTimer <= CurTime() then
 						self.Primary.RealSpread = self.Primary.Spread / 100
 					end
 				end
-				if self.Owner:KeyDown( IN_FORWARD ) or self.Owner:KeyDown( IN_BACK ) or self.Owner:KeyDown( IN_MOVELEFT ) or self.Owner:KeyDown( IN_MOVERIGHT ) and !self.Owner:KeyDown( IN_SPEED ) and self.Primary.RealSpread <= self.Primary.Spread / 100 then
+				if self.Owner:KeyDown( IN_FORWARD ) or self.Owner:KeyDown( IN_BACK ) or self.Owner:KeyDown( IN_MOVELEFT ) or self.Owner:KeyDown( IN_MOVERIGHT ) and !self.Owner:KeyDown( IN_SPEED ) and self.Primary.RealSpread <= self.Primary.Spread / 100 and self.Primary.SpreadTimer <= CurTime() then
 					self.Primary.RealSpread = self.Primary.Spread / 50
 				end
-				if self.Owner:KeyDown( IN_SPEED ) and ( self.Owner:KeyDown( IN_FORWARD ) || self.Owner:KeyDown( IN_BACK ) || self.Owner:KeyDown( IN_MOVELEFT ) || self.Owner:KeyDown( IN_MOVERIGHT ) ) then
+				if self.Owner:KeyDown( IN_SPEED ) and ( self.Owner:KeyDown( IN_FORWARD ) || self.Owner:KeyDown( IN_BACK ) || self.Owner:KeyDown( IN_MOVELEFT ) || self.Owner:KeyDown( IN_MOVERIGHT ) ) and self.Primary.SpreadTimer <= CurTime() then
 					self.Primary.RealSpread = self.Primary.Spread / 25
 				end
 				if self.Owner:GetVelocity():Length() <= 100 and self.Primary.RealSpread > self.Primary.Spread / 15 then
@@ -615,17 +612,17 @@ function SWEP:Think()
 			end
 			if self.Iron == 1 then
 				if self.Owner:GetVelocity():Length() <= 100 then
-					if self.Owner:KeyDown( IN_DUCK ) then
-						self.Primary.RealSpread = self.Primary.Spread / 150
+					if self.Owner:KeyDown( IN_DUCK ) and self.Primary.SpreadTimer <= CurTime() then
+						self.Primary.RealSpread = self.Primary.Spread / 300
 					end
 					if self.Primary.SpreadTimer <= CurTime() then
-						self.Primary.RealSpread = self.Primary.Spread / 125
+						self.Primary.RealSpread = self.Primary.Spread / 150
 					end
 				end
-				if self.Owner:KeyDown( IN_FORWARD ) or self.Owner:KeyDown( IN_BACK ) or self.Owner:KeyDown( IN_MOVELEFT ) or self.Owner:KeyDown( IN_MOVERIGHT ) and !self.Owner:KeyDown( IN_SPEED ) and self.Primary.RealSpread <= self.Primary.Spread / 125 then
+				if self.Owner:KeyDown( IN_FORWARD ) or self.Owner:KeyDown( IN_BACK ) or self.Owner:KeyDown( IN_MOVELEFT ) or self.Owner:KeyDown( IN_MOVERIGHT ) and !self.Owner:KeyDown( IN_SPEED ) and self.Primary.RealSpread <= self.Primary.Spread / 125 and self.Primary.SpreadTimer <= CurTime() then
 					self.Primary.RealSpread = self.Primary.Spread / 75
 				end
-				if self.Owner:KeyDown( IN_SPEED ) and ( self.Owner:KeyDown( IN_FORWARD ) || self.Owner:KeyDown( IN_BACK ) || self.Owner:KeyDown( IN_MOVELEFT ) || self.Owner:KeyDown( IN_MOVERIGHT ) ) then
+				if self.Owner:KeyDown( IN_SPEED ) and ( self.Owner:KeyDown( IN_FORWARD ) || self.Owner:KeyDown( IN_BACK ) || self.Owner:KeyDown( IN_MOVELEFT ) || self.Owner:KeyDown( IN_MOVERIGHT ) ) and self.Primary.SpreadTimer <= CurTime() then
 					self.Primary.RealSpread = self.Primary.Spread / 50
 				end
 				if self.Owner:GetVelocity():Length() <= 100 and self.Primary.RealSpread > self.Primary.Spread / 25 then
@@ -642,7 +639,7 @@ function SWEP:Think()
 			end
 			self.Primary.SpreadTimer = CurTime() + 0.1
 		end
-		if self.Idle == 0 and self.IdleTimer > CurTime() and self.IdleTimer < CurTime() + 0.1 and self.Iron == 0 then
+		if self.Idle == 0 and self.IdleTimer > CurTime() and self.IdleTimer < CurTime() + 0.25 and self.Iron == 0 then
 			self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
 			self.Idle = 1
 		end
@@ -652,7 +649,7 @@ function SWEP:Think()
 		end
 		self.BobScale = self.Weapon:GetNWString( "BobSway", 1.5 )
 		self.SwayScale = self.Weapon:GetNWString( "BobSway", 1.5 )
-		if self.Owner:KeyDown( IN_USE ) and self.Owner:KeyPressed( IN_RELOAD ) then
+		if self.Owner:KeyDown( IN_USE ) and self.Owner:KeyPressed( IN_RELOAD ) and self.SwitchTo != nil then
 			self.UseFireMode = 1
 			self:FireMode()
 		end
@@ -699,49 +696,47 @@ function SWEP:Think()
 	if self.Iron == 1 and self.Sprint == 0 then
 		self:SetWeaponHoldType( self.HoldTypeIron )
 	end
-	if disableIron == 0 then
-		if self.IronSightsPos != nil and self.IronSightsAng != nil and self.Sprint == 0 and self.Reloading == 0 and self.ReloadShot == 0 then
-			if self.Owner:KeyDown( IN_ATTACK2 ) and !self.Owner:KeyDown( IN_SPEED ) and self.Iron == 0 then
-				if self.ScopeTexture > 0 then
-					self.Owner:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0, 255 ), self.IronTime, self.IronTime )
-				end
-				self.Iron = 1
-				self.IronIn = 1
-				self.IronTimer = CurTime() + self.IronTime
+	if self.IronSightsPos != nil and self.IronSightsAng != nil and self.Sprint == 0 and self.Reloading == 0 and self.ReloadShot == 0 then
+		if self.Owner:KeyDown( IN_ATTACK2 ) and !self.Owner:KeyDown( IN_SPEED ) and self.Iron == 0 then
+			if self.ScopeTexture > 0 then
+				self.Owner:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0, 255 ), self.IronTime, self.IronTime )
 			end
-			if self.Owner:KeyReleased( IN_ATTACK2 ) and self.Iron == 1 then
-				self.Iron = 0
-				self.IronIn = 2
-				self.IronTimer = CurTime() + self.IronTime / 2
-				self.Owner:SetFOV( 0, self.IronTime )
+			self.Iron = 1
+			self.IronIn = 1
+			self.IronTimer = CurTime() + self.IronTime
+		end
+		if self.Owner:KeyReleased( IN_ATTACK2 ) and self.Iron == 1 then
+			self.Iron = 0
+			self.IronIn = 2
+			self.IronTimer = CurTime() + self.IronTime / 2
+			self.Owner:SetFOV( 0, self.IronTime )
+		end
+		if self.IronIn == 1 and self.IronTimer <= CurTime() then
+			self.Weapon:SetNWString( "MouseSensitivity", 1 / ( self.IronFOVMult + 1.25 ) )
+			self.Owner:SetFOV( self.Owner:GetFOV() / self.IronFOVMult, self.IronTime / 2 )
+			self.Weapon:SetNWString( "BobSway", 0.125 )
+			self.Pos = self.IronSightsPos
+			self.Ang = self.IronSightsAng
+			self:SetRun( true, self.Owner )
+			self.IronIn = 0
+			if self.ScopeTexture == 1 then
+				self.Weapon:SetNWString( "typical_scope", 1 )
 			end
-			if self.IronIn == 1 and self.IronTimer <= CurTime() then
-				self.Owner:SetFOV( self.Owner:GetFOV() / self.IronFOVMult, self.IronTime / 2 )
-				self.Weapon:SetNWString( "BobSway", 0.125 )
-				self.Weapon:SetNWString( "MouseSensitivity", 1 / self.IronFOVMult - 0.125 )
-				self.Pos = self.IronSightsPos
-				self.Ang = self.IronSightsAng
-				self:SetRun( true, self.Owner )
-				self.IronIn = 0
-				if self.ScopeTexture == 1 then
-					self.Weapon:SetNWString( "typical_scope", 1 )
-				end
-				if self.ScopeTexture == 2 then
-					self.Weapon:SetNWString( "scope_math", 1 )
-				end
-				if self.ScopeTexture == 3 then
-					self.Weapon:SetNWString( "gdcw_acog", 1 )
-				end
-				if self.ScopeTexture == 4 then
-					self.Weapon:SetNWString( "eotech_sight", 1 )
-				end
+			if self.ScopeTexture == 2 then
+				self.Weapon:SetNWString( "scope_math", 1 )
 			end
-			if self.IronIn == 2 and self.IronTimer <= CurTime() then
-				if self.ScopeTexture > 0 then
-					self.Owner:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0, 255 ), self.IronTime / 2, self.IronTime / 2 )
-				end
-				self:IronDisabler()
+			if self.ScopeTexture == 3 then
+				self.Weapon:SetNWString( "gdcw_acog", 1 )
 			end
+			if self.ScopeTexture == 4 then
+				self.Weapon:SetNWString( "eotech_sight", 1 )
+			end
+		end
+		if self.IronIn == 2 and self.IronTimer <= CurTime() then
+			if self.ScopeTexture > 0 and self.Reloading == 0 and self.ReloadShot == 0 then
+				self.Owner:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0, 255 ), self.IronTime / 2, self.IronTime / 2 )
+			end
+			self:IronDisabler()
 		end
 	end
 	if self.RunPos != nil and self.RunAng != nil and forceCanShootWhileR == 0 then
@@ -771,7 +766,6 @@ function SWEP:Think()
 	if self.Sprint == 0 and self.Iron == 0 then
 		self:SetWeaponHoldType( self.HoldType )
 	end
-	self:TC()
 end
 
 SWEP.SwitchTo = nil
@@ -930,16 +924,11 @@ function SWEP:Equip()
 	end
 end
 
-function SWEP:AdjustMouseSensitivity()
-	return self.Weapon:GetNWString( "MouseSensitivity", 1 )
-end
-
 function SWEP:DrawHUD()
 	local owner = self:GetOwner()
 	if CLIENT and (!owner:IsNPC()) then
 		draw.SimpleText( self.Weapon:GetNWInt( "text", "" ), "CloseCaption_Bold", ScrW() * 0.5, ScrH() * 0.35, Color( 124, 252, 0, 75 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 	end
-	self:HUDC()
 	if CLIENT then
 		surface.SetDrawColor(255,255,255,self.Weapon:GetNWString("eotech_sight",0))
 		surface.SetTexture( surface.GetTextureID( "scope/scope_dirty" ) )
@@ -982,19 +971,35 @@ function SWEP:DrawHUD()
 		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 	end
-	if self.DrawCrosshair == false then
-		if (owner:IsNPC()) or self.Iron == 1 or self.Sprint == 1 or self.ShootsOnlyInIron == true or shootOnlyInIron == 1 then return end
-		if CLIENT then
-			local x = ScrW() / 2
-			local y = ScrH() / 2
-			surface.SetDrawColor( 124, 252, 0, 75 )
-			surface.DrawLine( x - self.Weapon:GetNWString( "Crosshair1", 0 ), y, x - self.Weapon:GetNWString( "Crosshair2", 0 ), y )
-			surface.DrawLine( x + self.Weapon:GetNWString( "Crosshair1", 0 ), y, x + self.Weapon:GetNWString( "Crosshair2", 0 ), y )
-			surface.DrawLine( x, y - self.Weapon:GetNWString( "Crosshair1", 0 ), x, y - self.Weapon:GetNWString( "Crosshair2", 0 ) )
-			surface.DrawLine( x, y + self.Weapon:GetNWString( "Crosshair1", 0 ), x, y + self.Weapon:GetNWString( "Crosshair2", 0 ) )
-		end
+	if (owner:IsNPC()) or self.Iron == 1 or self.Sprint == 1 or self.ShootsOnlyInIron == true or shootOnlyInIron == 1 or self.DrawCrosshair == true then return end
+	if CLIENT then
+		local x = ScrW() / 2
+		local y = ScrH() / 2
+		surface.SetDrawColor( 124, 252, 0, 75 )
+		surface.DrawLine( x - self.Weapon:GetNWString( "Crosshair1", 0 ), y, x - self.Weapon:GetNWString( "Crosshair2", 0 ), y )
+		surface.DrawLine( x + self.Weapon:GetNWString( "Crosshair1", 0 ), y, x + self.Weapon:GetNWString( "Crosshair2", 0 ), y )
+		surface.DrawLine( x, y - self.Weapon:GetNWString( "Crosshair1", 0 ), x, y - self.Weapon:GetNWString( "Crosshair2", 0 ) )
+		surface.DrawLine( x, y + self.Weapon:GetNWString( "Crosshair1", 0 ), x, y + self.Weapon:GetNWString( "Crosshair2", 0 ) )
 	end
 end
+
+local disableText = 0
+
+if GetConVar( "tsb_disable_text_at_spawn" ) == nil then
+	disableText = 0
+	else
+	disableIron = GetConVar( "tsb_disable_text_at_spawn" ):GetFloat()
+end
+
+function RefreshDisableText(cvar, previous, new)
+	if GetConVar( "tsb_disable_text_at_spawn" ) == nil then
+		disableText = 0
+		else
+		disableText = GetConVar( "tsb_disable_text_at_spawn" ):GetFloat()
+	end
+end
+
+cvars.AddChangeCallback("tsb_disable_text_at_spawn", RefreshDisableText)
 
 function SWEP:Initialize()
 	self:SetWeaponHoldType( self.HoldType )
@@ -1004,21 +1009,25 @@ function SWEP:Initialize()
 	if CLIENT then
 		self.WElements = table.FullCopy( self.WElements )
 		self:CreateModels(self.WElements)
+		self.VElements = table.FullCopy( self.VElements )
+		self.ViewModelBoneMods = table.FullCopy( self.ViewModelBoneMods )
+		self:CreateModels(self.VElements)
 	end
 	local owner = self:GetOwner()
 	if (!owner:IsNPC()) then
-		self.TextTimer = CurTime() + 2.5
-		self.Weapon:SetNWInt( "text", "E+R - To change the fire mode" )
-		if ( self.language:GetString() == "ru" ) then
-			self.Weapon:SetNWInt( "text", "E+R - Чтобы переключть режим огня" )
+		if disableText == 1 then
+			self.Weapon:SetNWInt( "text", "" )
+			else
+			self.TextTimer = CurTime() + 2.5
+			self.Weapon:SetNWInt( "text", "E+R - To change the fire mode" )
+			if ( self.language:GetString() == "ru" ) and disableText == 0 then
+				self.Weapon:SetNWInt( "text", "E+R - Чтобы переключть режим огня" )
+			end
 		end
-		self.Idle = 0
-		self.IdleTimer = CurTime() + 1
+		self.Idle = 2
+		self.IdleTimer = CurTime()
 		self:IronDisabler()
 		if CLIENT then
-			self.VElements = table.FullCopy( self.VElements )
-			self.ViewModelBoneMods = table.FullCopy( self.ViewModelBoneMods )
-			self:CreateModels(self.VElements)
 			if IsValid(self.Owner) then
 				local vm = self.Owner:GetViewModel()
 				if IsValid(vm) then
@@ -1036,7 +1045,6 @@ function SWEP:Initialize()
 end
 
 function SWEP:Deploy()
-	self:DC()
 	self:SetWeaponHoldType( self.HoldType )
 	self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 	if self.DrawSound != nil then
@@ -1047,8 +1055,8 @@ function SWEP:Deploy()
 		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 		self:SetNextSecondaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 		self.Primary.SpreadTimer = CurTime()
-		self.Idle = 0
-		self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+		self.Idle = 2
+		self.IdleTimer = CurTime()
 		self.Owner:ViewPunchReset()
 		self.Reloading = 0
 		self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
@@ -1058,11 +1066,12 @@ end
 function SWEP:Holster( wep )
 	if self.BurstDelay > CurTime() then return end
 	self.Primary.SpreadTimer = CurTime()
-	self.Idle = 0
+	self.Idle = 2
 	self.IdleTimer = CurTime()
 	self.Reloading = 0
 	self.ReloadingTimer = CurTime()
 	self:ShotRelDisable()
+	self.Sprint = 0
 	local owner = self:GetOwner()
 	if (!owner:IsNPC()) then
 		self:IronDisabler()
@@ -1075,7 +1084,6 @@ function SWEP:Holster( wep )
 		end
 		self.Weapon:SetNWInt( "text", "" )
 	end
-	self:HC()
 	return true
 end
 
@@ -1482,27 +1490,6 @@ function SWEP:Ammo2()
 end
 
 SWEP.MuzzleAtt = nil
-
-function SWEP:PAC()
-end
-
-function SWEP:IC()
-end
-
-function SWEP:DC()
-end
-
-function SWEP:HC()
-end
-
-function SWEP:RC()
-end
-
-function SWEP:TC()
-end
-
-function SWEP:HUDC()
-end
 
 function SWEP:SecondaryAttack()
 end
