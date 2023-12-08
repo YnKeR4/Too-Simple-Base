@@ -335,30 +335,6 @@ function SWEP:PrimaryAttack()
 		end
 	end
 	if (!owner:IsNPC()) then
-		--and IsFirstTimePredicted()
-		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 1 then
-			self.RecoilStalkerTimer = CurTime() + self.CamRelaxSpeed
-			if self.CamdDispersionInc != nil then
-				self.RecoilStalker = self.RecoilStalker + self.CamdDispersion
-				if self.RecoilStalker > 0 then
-					self.RecoilStalker = self.RecoilStalker + self.CamdDispersionInc
-				end
-				else
-				self.RecoilStalker = self.RecoilStalker + self.CamdDispersion
-			end
-			if self.CamStepAngleHorz != nil and self.CamMaxAngleHorz != nil and self.RecoilStalkerHorz < self.CamMaxAngleHorz then
-				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, self.CamStepAngleHorz, 0 ) )
-			end
-			if self.RecoilStalker >= self.CamMaxAngle then
-				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -2.6 * self.RecoilStalker, 0, 0 ) )
-			end
-			if self.RecoilStalker < self.CamMaxAngle then
-				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.RecoilStalker, 0, 0 ) )
-			end
-			if self.CamdDispersionF != nil and IsFirstTimePredicted() then
-				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.CamdDispersionF, 0, 0 ) )
-			end
-		end
 		if overheatDisable == 0 then
 			if self.HotActivity == 0 then
 				self.Hot = self.Hot + 1
@@ -520,6 +496,41 @@ function SWEP:PrimaryAttack()
 				self.Owner:ViewPunch( Angle( -1 * self.Primary.ViewPunchUp / 2, 0, 0 ) )
 			end
 		end
+		--and IsFirstTimePredicted()
+		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 1 then
+			self.RecoilStalkerTimer = CurTime() + self.CamRelaxSpeed
+			if self.CamdDispersionInc != nil then
+				self.RecoilStalker = self.RecoilStalker + self.CamdDispersion
+				if self.RecoilStalker > 0 then
+					self.RecoilStalker = self.RecoilStalker + self.CamdDispersionInc
+				end
+				else
+				self.RecoilStalker = self.RecoilStalker + self.CamdDispersion
+			end
+			if self.CamStepAngleHorz != nil and self.RecoilStalker >= self.CamMaxAngle then
+				if self.Iron == 0 then
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( math.random( -1 * self.CamStepAngleHorz, self.CamStepAngleHorz ), math.random( -1 * self.CamStepAngleHorz, self.CamStepAngleHorz ), 0 ) )
+					else
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( math.random( -1 * self.CamStepAngleHorz / 2, self.CamStepAngleHorz / 2 ), math.random( -1 * self.CamStepAngleHorz / 2, self.CamStepAngleHorz / 2 ), 0 ) )
+				end
+			end
+			if self.RecoilStalker >= self.CamMaxAngle then
+				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1.75, 0, 0 ) )
+			end
+			if self.RecoilStalker < self.CamMaxAngle then
+				if self.Iron == 0 then
+					if self.CamdDispersionF != nil and IsFirstTimePredicted() then
+						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.CamdDispersionF / 2, 0, 0 ) )
+					end
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.RecoilStalker, 0, 0 ) )
+					else
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.RecoilStalker / 2, 0, 0 ) )
+					if self.CamdDispersionF != nil and IsFirstTimePredicted() then
+						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.CamdDispersionF / 2, 0, 0 ) )
+					end
+				end
+			end
+		end
 		if self.MuzzleAtt != nil and self.MuzzleEffect != nil and forceDisableCustomE == 0 then
 			local FX = EffectData{}
 			local fx = EffectData()
@@ -634,13 +645,8 @@ function SWEP:Think()
 	if (!owner:IsNPC()) then
 		--and IsFirstTimePredicted()
 		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 1 then
-			if self.RecoilStalkerHorz != nil and  self.CamMaxAngleHorz != nil then
-				if self.RecoilStalkerHorz >= self.CamMaxAngleHorz then
-					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, 0.25, 0 ) )
-				end
-			end
 			if self.RecoilStalker >= self.CamMaxAngle and IsFirstTimePredicted() then
-				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( self.RecoilStalker / 2, 0, 0 ) )
+				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0.25, 0, 0 ) )
 			end
 			if self.RecoilStalkerTimer <= CurTime() then
 				self.RecoilStalker = 0
