@@ -24,6 +24,10 @@ if SERVER then
 		CreateConVar( "tsb_disable_text_at_spawn", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the text when the weapon is spawned.", 0, 1 )
 	end
 
+	if GetConVar( "tsb_force_disable_overheating" ) == nil then
+		CreateConVar( "tsb_force_disable_overheating", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
+	end
+
 end
 
 sound.Add(
@@ -49,6 +53,16 @@ channel = CHAN_STATIC,
 volume = 1.0,
 soundlevel = SNDLVL_TALKING,
 sound = "weapons/TSBase/FireMode.ogg"
+})
+sound.Add(
+{
+name = "TooSimpleBase.Hot",
+channel = CHAN_STATIC,
+volume = { 1.25, 2.5 },
+soundlevel = SNDLVL_TALKING,
+sound = { "weapons/TSBase/sentry_upgrading_steam2.wav",
+"weapons/TSBase/sentry_upgrading_steam3.wav",
+"weapons/TSBase/sentry_upgrading_steam5.wav" }
 })
 sound.Add(
 {
