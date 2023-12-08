@@ -62,11 +62,23 @@ SWEP.Primary.Ammo 				= "pistol"	-- pistol, 357, smg1, ar2, buckshot, you can de
 -- https://wiki.facepunch.com/gmod/Default_Ammo_Types
 SWEP.Primary.Damage 			= 10	-- NPCs deal /2 Damage
 SWEP.Primary.TakeAmmo 			= 2	-- lost bullets after shot, you can delete this
-SWEP.Primary.StrenghtRecoil 	= 2.1214	-- recoil up
+SWEP.Primary.StrenghtRecoil 	= 2.1214	-- recoil up, you can delete this
 SWEP.Primary.Spread 			= 2.857	-- spread / 100 = real spread
 SWEP.Primary.SpreadTimerNumber 	= 0.6324	-- timer to set spread to def value
 SWEP.Primary.NumberofShots 		= 2	-- bullets per shot, you can delete this
 SWEP.Primary.RPM 				= 525	-- 60 / RPM = Delay between shots, you can delete this (it will use the sequence duration)
+
+SWEP.RecoilType 				= 0	-- 0 - default simple recoil, 1 - S.T.A.L.K.E.R. recoil (WIP), 
+-- you can delete this, def value is 0
+
+--[[	-- if you using 1 RecoilType
+SWEP.CamdDispersion 			= 0	-- strenght recoil
+SWEP.CamdDispersionInc 			= nil	-- added recoil to CamdDispersion after shot, you can delete this
+SWEP.CamMaxAngle 				= 0	-- max recoil
+SWEP.CamMaxAngleHorz 			= nil	-- max horizontal recoil, you can delete this
+SWEP.CamStepAngleHorz 			= nil	-- strenght recoil (right or left), you can delete this
+SWEP.CamdDispersionFrac 		= nil	-- the weapon will be raised to CamdDispersion * CamdDispersionFrac - CamdDispersion * ( 1 - CamdDispersionFrac ), you can delete this
+]]
 
 SWEP.MuzzleAtt 					= "muzzle"	-- "1" for css guns, "muzzle" for hl2 guns, you can delete this
 SWEP.MuzzleEffect 				= "tsb_universal_muzzle_flash"	-- you can delete this
