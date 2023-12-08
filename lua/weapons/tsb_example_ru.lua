@@ -70,7 +70,6 @@ SWEP.RecoilType 				= 0	-- 0 - обычный универсальный тип 
 SWEP.CamdDispersion 			= 0	-- увеличения угла (в градусах) с каждым выстрелом
 SWEP.CamdDispersionInc 			= nil	-- увеличениe CamdDispersion с каждым выстрелом, ты можешь это удалить
 SWEP.CamMaxAngle 				= 0	-- максимальный угол отдачи
-SWEP.CamMaxAngleHorz 			= nil	-- максимальный угол отклонения оружия по горизонтали, ты можешь это удалить
 SWEP.CamStepAngleHorz 			= nil	-- отклонение оружия по горизонтали при стрельбе, ты можешь это удалить
 SWEP.CamdDispersionFrac 		= nil	-- ствол будет подыматься на CamdDispersion * CamdDispersionFrac - CamdDispersion * ( 1 - CamdDispersionFrac ), ты можешь это удалить
 ]]
