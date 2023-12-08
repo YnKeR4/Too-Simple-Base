@@ -10,6 +10,7 @@ The sequel of the AYS Base, simpler and can be managed by server
 * Almost all strings can be deleted, to compress the Lua code;
 * SWEP Construction Kit support;
 * Commands to manage the base (only in console);
+* Overheating System;
 * and other small improvements...
 
 ## Controls:
@@ -18,7 +19,7 @@ The sequel of the AYS Base, simpler and can be managed by server
 
 ## Plans:
 * Add a settings menu
-* Overheating System
+* Overheating System (done)
 * Custom functions support
 
 ## Credits:
