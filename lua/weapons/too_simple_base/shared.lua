@@ -1,94 +1,24 @@
 AddCSLuaFile()
 
 SWEP.Base = "weapon_base"
-SWEP.language = ( GetConVar( "gmod_language" ) )
-SWEP.PrintName = nil
-SWEP.LuaName = ""
-SWEP.SelectIconPath = ""
-SWEP.Category = ""
-SWEP.Spawnable= false
-SWEP.AdminSpawnable= false
-SWEP.AdminOnly = false
 
-SWEP.ViewModelFOV = 54
-SWEP.ViewModel = ""
-SWEP.WorldModel = ""
-SWEP.ViewModelFlip = false
+local overheatDisable = 0
 
-SWEP.SwayScale = 1
-SWEP.BobScale = 1
-
-SWEP.AutoSwitchTo = true
-SWEP.AutoSwitchFrom = true
-SWEP.Weight = 25
-
-SWEP.Slot = 0
-SWEP.SlotPos = 0
-
-SWEP.UseHands = false
-SWEP.HoldType = ""
-SWEP.FiresUnderwater = false
-SWEP.DrawCrosshair = true
-SWEP.DrawAmmo = true
-SWEP.CSMuzzleFlashes = true
-
-SWEP.Idle = 0
-SWEP.IdleTimer = CurTime()
-
-SWEP.DrawSound = nil
-SWEP.ReloadSound = nil
-
-SWEP.Primary.Sound = nil
-SWEP.Primary.ClipSize = -1
-SWEP.Primary.DefaultClip = -1
-SWEP.Primary.FireMode = nil
-SWEP.Primary.Automatic = false
-SWEP.Primary.Ammo = nil
-SWEP.Primary.Damage = nil
-SWEP.Primary.TakeAmmo = 1
-SWEP.Primary.StrenghtRecoil = nil
-SWEP.Primary.RealSpread = 5
-SWEP.Primary.Spread = nil
-SWEP.Primary.SpreadTimer = CurTime()
-SWEP.Primary.SpreadTimerNumber = nil
-SWEP.Primary.NumberofShots = 1
-SWEP.Primary.RPM = nil
-
-SWEP.Secondary.Sound = nil
-SWEP.Secondary.ClipSize = -1
-SWEP.Secondary.DefaultClip = -1
-SWEP.Secondary.Automatic = false
-SWEP.Secondary.Ammo = "none"
-SWEP.Secondary.Damage = nil
-SWEP.Secondary.Delay = nil
-
-SWEP.ShowTracerInXChance = nil
-SWEP.TracerName = nil
-SWEP.BulletImpactName = nil
-
-SWEP.ShowViewModel = nil
-SWEP.ShowWorldModel = nil
-
-SWEP.Primary.ViewPunchUp = nil
-SWEP.Primary.ViewPunchRight = nil
-SWEP.Primary.ViewPunchRoll = nil
-
-SWEP.WhenRoll = 0
-SWEP.ResetViewPunch = false
-
-SWEP.VElements = {}
-SWEP.WElements = {}
-
-SWEP.Burst = 0
-SWEP.BurstDelay = CurTime()
-SWEP.ShootsOnlyInIron = false
-SWEP.Primary.SoundExtra = nil
-SWEP.Jam = 0
-SWEP.JamActive = 0
-
-function SWEP:AdjustMouseSensitivity()
-	return self.Weapon:GetNWString( "MouseSensitivity", 1 )
+if GetConVar( "tsb_force_disable_overheating" ) == nil then
+	overheatDisable = 0
+	else
+	overheatDisable = GetConVar("tsb_force_disable_overheating"):GetFloat()
 end
+
+function RefreshTheOverheatDisalber(cvar, previous, new)
+	if GetConVar( "tsb_force_disable_overheating" ) == nil then
+		overheatDisable = 0
+		else
+		overheatDisable = GetConVar("tsb_force_disable_overheating"):GetFloat()
+	end
+end
+
+cvars.AddChangeCallback("tsb_force_disable_overheating", RefreshTheOverheatDisalber)
 
 local damageMult = 1
 
@@ -192,6 +122,114 @@ end
 
 cvars.AddChangeCallback("tsb_force_shoot_only_in_iron", RefreshTheShootingInIron)
 
+SWEP.language = ( GetConVar( "gmod_language" ) )
+SWEP.PrintName = nil
+SWEP.LuaName = ""
+SWEP.SelectIconPath = ""
+SWEP.Category = ""
+SWEP.Spawnable= false
+SWEP.AdminSpawnable= false
+SWEP.AdminOnly = false
+
+SWEP.ViewModelFOV = 54
+SWEP.ViewModel = ""
+SWEP.WorldModel = ""
+SWEP.ViewModelFlip = false
+
+SWEP.SwayScale = 1
+SWEP.BobScale = 1
+
+SWEP.AutoSwitchTo = true
+SWEP.AutoSwitchFrom = true
+SWEP.Weight = 25
+
+SWEP.Slot = 0
+SWEP.SlotPos = 0
+
+SWEP.UseHands = false
+SWEP.HoldType = ""
+SWEP.FiresUnderwater = false
+SWEP.DrawCrosshair = true
+SWEP.DrawAmmo = true
+SWEP.CSMuzzleFlashes = true
+
+SWEP.Idle = 0
+SWEP.IdleTimer = CurTime()
+
+SWEP.DrawSound = nil
+SWEP.ReloadSound = nil
+
+SWEP.Primary.Sound = nil
+SWEP.Primary.ClipSize = -1
+SWEP.Primary.DefaultClip = -1
+SWEP.Primary.FireMode = nil
+SWEP.Primary.Automatic = false
+SWEP.Primary.Ammo = nil
+SWEP.Primary.Damage = nil
+SWEP.Primary.TakeAmmo = 1
+SWEP.Primary.StrenghtRecoil = nil
+SWEP.Primary.RealSpread = 5
+SWEP.Primary.Spread = nil
+SWEP.Primary.SpreadTimer = CurTime()
+SWEP.Primary.SpreadTimerNumber = nil
+SWEP.Primary.NumberofShots = 1
+SWEP.Primary.RPM = nil
+
+SWEP.Secondary.Sound = nil
+SWEP.Secondary.ClipSize = -1
+SWEP.Secondary.DefaultClip = -1
+SWEP.Secondary.Automatic = false
+SWEP.Secondary.Ammo = "none"
+SWEP.Secondary.Damage = nil
+SWEP.Secondary.Delay = nil
+
+SWEP.ShowTracerInXChance = nil
+SWEP.TracerName = nil
+SWEP.BulletImpactName = nil
+
+SWEP.ShowViewModel = nil
+SWEP.ShowWorldModel = nil
+
+SWEP.Primary.ViewPunchUp = nil
+SWEP.Primary.ViewPunchRight = nil
+SWEP.Primary.ViewPunchRoll = nil
+
+SWEP.WhenRoll = 0
+SWEP.ResetViewPunch = false
+
+SWEP.VElements = {}
+SWEP.WElements = {}
+
+SWEP.Burst = 0
+SWEP.BurstDelay = CurTime()
+SWEP.ShootsOnlyInIron = false
+SWEP.Primary.SoundExtra = nil
+SWEP.Jam = 0
+SWEP.JamActive = 0
+SWEP.Hot = 0
+SWEP.HotActivity = 0
+SWEP.HotTimer = CurTime()
+
+SWEP.CamRelaxSpeed = 0.25
+SWEP.CamdDispersion = 0
+SWEP.CamdDispersionInc = nil
+SWEP.CamMaxAngle = 0
+SWEP.CamMaxAngleHorz = nil
+SWEP.CamStepAngleHorz = nil
+SWEP.CamdDispersionFrac = nil
+
+if SWEP.CamdDispersionFrac != nil then
+	SWEP.CamdDispersionF = SWEP.CamdDispersion * SWEP.CamdDispersionFrac - SWEP.CamdDispersion * ( 1 - SWEP.CamdDispersionFrac )
+	else
+	SWEP.CamdDispersionF = nil
+end
+
+SWEP.RecoilStalker = 0
+SWEP.RecoilStalkerHorz = 0
+SWEP.RecoilStalkerTimer = CurTime()
+SWEP.RecoilType = 0
+SWEP.Text = 0
+
 function SWEP:PrimaryAttack()
 	if ( self.ShootsOnlyInIron == true || shootOnlyInIron == 1 ) and self.Iron == 0 then return end
 	local owner = self:GetOwner()
@@ -222,7 +260,7 @@ function SWEP:PrimaryAttack()
 	end
 	if owner:IsNPC() then
 		bullet.Damage = self.Primary.Damage * damageMult / 2
-		bullet.Spread = Vector( self.Primary.RealSpread / 100, self.Primary.RealSpread / 100, 0 )
+		bullet.Spread = Vector( self.Primary.Spread / 100, self.Primary.Spread / 100, 0 )
 	end
 	if self.Primary.Ammo != nil then
 		bullet.AmmoType = self.Primary.Ammo
@@ -298,35 +336,113 @@ function SWEP:PrimaryAttack()
 		end
 	end
 	if (!owner:IsNPC()) then
+		--and IsFirstTimePredicted()
+		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 1 then
+			self.RecoilStalkerTimer = CurTime() + self.CamRelaxSpeed
+			if self.CamdDispersionInc != nil then
+				self.RecoilStalker = self.RecoilStalker + self.CamdDispersion
+				if self.RecoilStalker > 0 then
+					self.RecoilStalker = self.RecoilStalker + self.CamdDispersionInc
+				end
+				else
+				self.RecoilStalker = self.RecoilStalker + self.CamdDispersion
+			end
+			if self.CamStepAngleHorz != nil and self.CamMaxAngleHorz != nil and self.RecoilStalkerHorz < self.CamMaxAngleHorz then
+				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, self.CamStepAngleHorz, 0 ) )
+			end
+			if self.RecoilStalker >= self.CamMaxAngle then
+				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -2.6 * self.RecoilStalker, 0, 0 ) )
+			end
+			if self.RecoilStalker < self.CamMaxAngle then
+				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.RecoilStalker, 0, 0 ) )
+			end
+			if self.CamdDispersionF != nil and IsFirstTimePredicted() then
+				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.CamdDispersionF, 0, 0 ) )
+			end
+		end
+		if overheatDisable == 0 then
+			if self.HotActivity == 0 then
+				self.Hot = self.Hot + 1
+				self.HotTimer = CurTime() + 0.2
+			end
+			if self.Hot >= self.Primary.ClipSize * 2 and self.HotActivity == 0 then
+				self.HotActivity = 1
+				self.Owner:EmitSound( "TooSimpleBase.Hot" )
+				self.TextTimer = CurTime() + 2.5
+				self.Text = 1
+				self.Weapon:SetNWString( "overheated_eng", 1 )
+				if ( self.language:GetString() == "ru" ) then
+					self.Weapon:SetNWString( "overheated_ru", 1 )
+				end
+			end
+			if self.Hot == self.Primary.ClipSize and self.HotActivity == 0 then
+				self.TextTimer = CurTime() + 3
+				self.Text = 1
+				self.Weapon:SetNWString( "will_overheat_eng", 1 )
+				if ( self.language:GetString() == "ru" ) then
+					self.Weapon:SetNWString( "will_overheat_ru", 1 )
+				end
+			end
+		end
 		self.Jam = math.Rand( 0, 100 )
 		if disableJamming == 0 then
 			if self.Primary.Ammo == "pistol" then
 				if self.Jam <= 0.75 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
+					self.TextTimer = CurTime() + 2.5
+					self.Text = 1
+					self.Weapon:SetNWString( "jam_eng", 1 )
+					if ( self.language:GetString() == "ru" ) then
+						self.Weapon:SetNWString( "jam_ru", 1 )
+					end
 				end
 			end
 			if self.Primary.Ammo == "ar2" or self.Primary.Ammo == "smg1" then
 				if self.Jam <= 0.8 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
+					self.TextTimer = CurTime() + 2.5
+					self.Text = 1
+					self.Weapon:SetNWString( "jam_eng", 1 )
+					if ( self.language:GetString() == "ru" ) then
+						self.Weapon:SetNWString( "jam_ru", 1 )
+					end
 				end
 			end
 			if self.Primary.Ammo == "357" or self.Primary.Ammo == "SniperPenetratedRound" then
 				if self.Jam <= 0.85 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
+					self.TextTimer = CurTime() + 2.5
+					self.Text = 1
+					self.Weapon:SetNWString( "jam_eng", 1 )
+					if ( self.language:GetString() == "ru" ) then
+						self.Weapon:SetNWString( "jam_ru", 1 )
+					end
 				end
 			end
 			if self.Primary.Ammo == "buckshot" then
 				if self.Jam <= 0.65 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
+					self.TextTimer = CurTime() + 2.5
+					self.Text = 1
+					self.Weapon:SetNWString( "jam_eng", 1 )
+					if ( self.language:GetString() == "ru" ) then
+						self.Weapon:SetNWString( "jam_ru", 1 )
+					end
 				end
 				else
 				if self.Jam <= 0.7 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
+					self.TextTimer = CurTime() + 2.5
+					self.Text = 1
+					self.Weapon:SetNWString( "jam_eng", 1 )
+					if ( self.language:GetString() == "ru" ) then
+						self.Weapon:SetNWString( "jam_ru", 1 )
+					end
 				end
 			end
 		end
@@ -340,7 +456,7 @@ function SWEP:PrimaryAttack()
 			self.Idle = 0
 		end
 		if self.Weapon:Clip1() < 1 then
-			self.Idle = 1
+			self.Idle = 2
 		end
 		self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 		if self.Iron == 0 then
@@ -351,7 +467,7 @@ function SWEP:PrimaryAttack()
 				if self.Primary.ViewPunchRoll == nil and self.Primary.ViewPunchUp != nil then
 					self.Owner:ViewPunch( Angle( 0, 0, self.Primary.ViewPunchUp ) )
 				end
-				if self.Primary.StrenghtRecoil != nil then
+				if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, self.Primary.StrenghtRecoil / 2, 0 ) )
 				end
 				if self.Primary.ViewPunchRight != nil then
@@ -368,7 +484,7 @@ function SWEP:PrimaryAttack()
 				if self.Primary.ViewPunchRoll == nil and self.Primary.ViewPunchUp != nil then
 					self.Owner:ViewPunch( Angle( 0, 0, -1 * self.Primary.ViewPunchUp ) )
 				end
-				if self.Primary.StrenghtRecoil != nil then
+				if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, -1 * self.Primary.StrenghtRecoil / 2, 0 ) )
 				end
 				if self.Primary.ViewPunchRight != nil then
@@ -378,7 +494,7 @@ function SWEP:PrimaryAttack()
 					self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchUp / 2, 0 ) )
 				end
 			end
-			if self.Primary.StrenghtRecoil != nil then
+			if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.Primary.StrenghtRecoil, 0, 0 ) )
 			end
 			self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber
@@ -404,7 +520,7 @@ function SWEP:PrimaryAttack()
 				if self.Primary.ViewPunchRoll == nil and self.Primary.ViewPunchUp != nil then
 					self.Owner:ViewPunch( Angle( 0, 0, self.Primary.ViewPunchUp / 2 ) )
 				end
-				if self.Primary.StrenghtRecoil != nil then
+				if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, self.Primary.StrenghtRecoil / 4, 0 ) )
 				end
 				if self.Primary.ViewPunchRight != nil then
@@ -421,7 +537,7 @@ function SWEP:PrimaryAttack()
 				if self.Primary.ViewPunchRoll == nil and self.Primary.ViewPunchUp != nil then
 					self.Owner:ViewPunch( Angle( 0, 0, -1 * self.Primary.ViewPunchUp / 2 ) )
 				end
-				if self.Primary.StrenghtRecoil != nil then
+				if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, -1 * self.Primary.StrenghtRecoil / 4, 0 ) )
 				end
 				if self.Primary.ViewPunchRight != nil  then
@@ -431,7 +547,7 @@ function SWEP:PrimaryAttack()
 					self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchUp / 4, 0 ) )
 				end
 			end
-			if self.Primary.StrenghtRecoil != nil then
+			if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.Primary.StrenghtRecoil / 1.5, 0, 0 ) )
 			end
 			self.Primary.SpreadTimer = CurTime() + self.Primary.SpreadTimerNumber
@@ -479,12 +595,29 @@ function SWEP:CanPrimaryAttack()
 		self.Owner:EmitSound( "TooSimpleBase.Alert" )
 		self:SetNextPrimaryFire( CurTime() + 1 )
 		self:SetNextSecondaryFire( CurTime() + 1 )
+		self.TextTimer = CurTime() + 2.5
+		self.Text = 1
+		self.Weapon:SetNWString( "jam_eng", 1 )
+		if ( self.language:GetString() == "ru" ) then
+			self.Weapon:SetNWString( "jam_ru", 1 )
+		end
+		return false
+	end
+	if self.HotActivity == 1 then
+		self.Owner:EmitSound( "TooSimpleBase.Hot" )
+		self:SetNextPrimaryFire( CurTime() + 1 )
+		self:SetNextSecondaryFire( CurTime() + 1 )
+		self.TextTimer = CurTime() + 2.5
+		self.Text = 1
+		self.Weapon:SetNWString( "overheated_eng", 1 )
+		if ( self.language:GetString() == "ru" ) then
+			self.Weapon:SetNWString( "overheated_ru", 1 )
+		end
 		return false
 	end
 	return true
 end
 
-SWEP.Chambering = true
 SWEP.m_WeaponDeploySpeed = 1
 SWEP.Reloading = 0
 SWEP.ReloadingTimer = CurTime()
@@ -497,6 +630,8 @@ function SWEP:Reload()
 		self:IronDisabler()
 		self.Owner:SetFOV( 0, 0.1 )
 		self.JamActive = 0
+		self.RecoilStalker = 0
+		self.RecoilStalkerTimer = CurTime()
 		if self.ShotgunReload == false then
 			self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
 			if self.ReloadSound != nil then
@@ -554,6 +689,20 @@ end
 function SWEP:Think()
 	local owner = self:GetOwner()
 	if (!owner:IsNPC()) then
+		--and IsFirstTimePredicted()
+		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 1 then
+			if self.RecoilStalkerHorz != nil and  self.CamMaxAngleHorz != nil then
+				if self.RecoilStalkerHorz >= self.CamMaxAngleHorz then
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, 0.25, 0 ) )
+				end
+			end
+			if self.RecoilStalker >= self.CamMaxAngle and IsFirstTimePredicted() then
+				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( self.RecoilStalker / 2, 0, 0 ) )
+			end
+			if self.RecoilStalkerTimer <= CurTime() then
+				self.RecoilStalker = 0
+			end
+		end
 		if self.ReloadShot == 1 and self.ReloadShotTimer <= CurTime() then
 			if self.ReloadSound != nil then
 				self:EmitSound( self.ReloadSound )
@@ -655,6 +804,13 @@ function SWEP:Think()
 		end
 		if self.TextTimer <= CurTime() then
 			self.Weapon:SetNWInt( "text", "" )
+			self.Weapon:SetNWString("jam_ru",0)
+			self.Weapon:SetNWString("jam_eng",0)
+			self.Weapon:SetNWString("overheated_ru",0)
+			self.Weapon:SetNWString("overheated_eng",0)
+			self.Weapon:SetNWString("will_overheat_ru",0)
+			self.Weapon:SetNWString("will_overheat_eng",0)
+			self.Text = 0
 		end
 		if self.Sprint == 0 and self.Reloading == 0 and self.ReloadShot == 0 and self.Iron == 0 then
 			if self.Owner:KeyDown( IN_DUCK ) and self.ViewModelFlip == false then
@@ -670,6 +826,19 @@ function SWEP:Think()
 			if self.Owner:KeyReleased( IN_DUCK ) then
 				self:SetRun( false, self.Owner )
 			end
+		end
+		if self.HotTimer <= CurTime() and self.Hot >= 1 and self.HotActivity == 0 then
+			self.Hot = self.Hot - 1
+			self.HotTimer = CurTime() + 0.2
+		end
+		if self.HotTimer <= CurTime() and self.Hot >= 1 and self.HotActivity == 1 then
+			self.Hot = self.Hot - 1
+			self.HotTimer = CurTime() + 0.1
+		end
+		if self.HotTimer <= CurTime() and self.Hot == 0 then
+			self.Hot = 0
+			self.HotActivity = 0
+			self.HotTimer = CurTime()
 		end
 	end
 	if self.Primary.FireMode <= 1 then
@@ -913,23 +1082,10 @@ function SWEP:IronDisabler()
 	self.Weapon:SetNWString( "gdcw_acog", 0 )
 end
 
-function SWEP:Equip()
-	self:SetRun( false, self.Owner )
-	self.Weapon:SetNWString( "eotech_sight", 0 )
-	self.Weapon:SetNWString( "typical_scope", 0 )
-	self.Weapon:SetNWString( "scope_math", 0 )
-	self.Weapon:SetNWString( "gdcw_acog", 0 )
-	if self.Weapon:Clip1() > self.Primary.ClipSize then
-		self.Weapon:SetClip1( self.Primary.ClipSize )
-	end
-end
-
 function SWEP:DrawHUD()
 	local owner = self:GetOwner()
 	if CLIENT and (!owner:IsNPC()) then
 		draw.SimpleText( self.Weapon:GetNWInt( "text", "" ), "CloseCaption_Bold", ScrW() * 0.5, ScrH() * 0.35, Color( 124, 252, 0, 75 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-	end
-	if CLIENT then
 		surface.SetDrawColor(255,255,255,self.Weapon:GetNWString("eotech_sight",0))
 		surface.SetTexture( surface.GetTextureID( "scope/scope_dirty" ) )
 		surface.DrawTexturedRect( ( ScrW() - ScrH() ) / 2, 0, ScrH(), ScrH() )
@@ -938,8 +1094,6 @@ function SWEP:DrawHUD()
 		surface.SetTexture( surface.GetTextureID( "scope/scope1" ) )
 		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
-	end
-	if CLIENT then
 		surface.SetDrawColor(255,255,255,self.Weapon:GetNWString("typical_scope",0))
 		surface.SetTexture( surface.GetTextureID( "scope/scope_lens" ) )
 		surface.DrawTexturedRect( ( ScrW() - ScrH() ) / 2, 0, ScrH(), ScrH() )
@@ -948,8 +1102,6 @@ function SWEP:DrawHUD()
 		surface.SetTexture( surface.GetTextureID( "scope/scope1" ) )
 		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
-	end
-	if CLIENT then
 		surface.SetDrawColor(255,255,255,self.Weapon:GetNWString("scope_math",0))
 		surface.SetTexture( surface.GetTextureID( "scope/scope_lens" ) )
 		surface.DrawTexturedRect( ( ScrW() - ScrH() ) / 2, 0, ScrH(), ScrH() )
@@ -958,8 +1110,6 @@ function SWEP:DrawHUD()
 		surface.SetTexture( surface.GetTextureID( "scope/scope1" ) )
 		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
-	end
-	if CLIENT then
 		surface.SetDrawColor(255,255,255,self.Weapon:GetNWString("gdcw_acog",0))
 		surface.SetTexture( surface.GetTextureID( "scope/scope_dirty" ) )
 		surface.DrawTexturedRect( ( ScrW() - ScrH() ) / 2, 0, ScrH(), ScrH() )
@@ -971,7 +1121,7 @@ function SWEP:DrawHUD()
 		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 	end
-	if (owner:IsNPC()) or self.Iron == 1 or self.Sprint == 1 or self.ShootsOnlyInIron == true or shootOnlyInIron == 1 or self.DrawCrosshair == true then return end
+	if (owner:IsNPC()) or self.Iron == 1 or self.Sprint == 1 or self.ShootsOnlyInIron == true or shootOnlyInIron == 1 or self.DrawCrosshair == true or self.Text == 1 then return end
 	if CLIENT then
 		local x = ScrW() / 2
 		local y = ScrH() / 2
@@ -980,6 +1130,21 @@ function SWEP:DrawHUD()
 		surface.DrawLine( x + self.Weapon:GetNWString( "Crosshair1", 0 ), y, x + self.Weapon:GetNWString( "Crosshair2", 0 ), y )
 		surface.DrawLine( x, y - self.Weapon:GetNWString( "Crosshair1", 0 ), x, y - self.Weapon:GetNWString( "Crosshair2", 0 ) )
 		surface.DrawLine( x, y + self.Weapon:GetNWString( "Crosshair1", 0 ), x, y + self.Weapon:GetNWString( "Crosshair2", 0 ) )
+	end
+end
+
+function SWEP:AdjustMouseSensitivity()
+	return self.Weapon:GetNWString( "MouseSensitivity", 1 )
+end
+
+function SWEP:Equip()
+	self:SetRun( false, self.Owner )
+	self.Weapon:SetNWString( "eotech_sight", 0 )
+	self.Weapon:SetNWString( "typical_scope", 0 )
+	self.Weapon:SetNWString( "scope_math", 0 )
+	self.Weapon:SetNWString( "gdcw_acog", 0 )
+	if self.Weapon:Clip1() > self.Primary.ClipSize then
+		self.Weapon:SetClip1( self.Primary.ClipSize )
 	end
 end
 
@@ -1050,6 +1215,8 @@ function SWEP:Deploy()
 	if self.DrawSound != nil then
 		self.Owner:EmitSound( self.DrawSound )
 	end
+	self.RecoilStalker = 0
+	self.RecoilStalkerTimer = CurTime()
 	local owner = self:GetOwner()
 	if (!owner:IsNPC()) then
 		self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
@@ -1072,6 +1239,8 @@ function SWEP:Holster( wep )
 	self.ReloadingTimer = CurTime()
 	self:ShotRelDisable()
 	self.Sprint = 0
+	self.RecoilStalker = 0
+	self.RecoilStalkerTimer = CurTime()
 	local owner = self:GetOwner()
 	if (!owner:IsNPC()) then
 		self:IronDisabler()
@@ -1429,10 +1598,8 @@ end
 
 SWEP.IronSightsPos = nil
 SWEP.IronSightsAng = nil
-
 SWEP.Pos = Vector( 0, 0, 0 )
 SWEP.Angle = Vector( 0, 0, 0 )
-
 SWEP.WalkPos = Vector(-0.75, -2, -1)
 SWEP.WalkAng = Vector(0, 0, 0)
 
@@ -1496,9 +1663,7 @@ end
 
 function SWEP:FireAnimationEvent( pos, ang, event, options )
 	if self.MuzzleAtt != nil and forceDisableCustomE == 0 then
-		-- Disables animation based muzzle event
-		if ( event == 21 ) then return true end	
-		-- Disable thirdperson muzzle flash
+		if ( event == 21 ) then return true end
 		if ( event == 5001 or event == 5011 or event == 5021 or event == 5031 ) then return true end
 	end
 end
