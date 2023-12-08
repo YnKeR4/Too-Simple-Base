@@ -75,7 +75,6 @@ SWEP.RecoilType 				= 0	-- 0 - default simple recoil, 1 - S.T.A.L.K.E.R. recoil 
 SWEP.CamdDispersion 			= 0	-- strenght recoil
 SWEP.CamdDispersionInc 			= nil	-- added recoil to CamdDispersion after shot, you can delete this
 SWEP.CamMaxAngle 				= 0	-- max recoil
-SWEP.CamMaxAngleHorz 			= nil	-- max horizontal recoil, you can delete this
 SWEP.CamStepAngleHorz 			= nil	-- strenght recoil (right or left), you can delete this
 SWEP.CamdDispersionFrac 		= nil	-- the weapon will be raised to CamdDispersion * CamdDispersionFrac - CamdDispersion * ( 1 - CamdDispersionFrac ), you can delete this
 ]]
