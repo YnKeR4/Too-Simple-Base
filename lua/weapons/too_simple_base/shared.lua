@@ -228,7 +228,6 @@ SWEP.RecoilStalker = 0
 SWEP.RecoilStalkerHorz = 0
 SWEP.RecoilStalkerTimer = CurTime()
 SWEP.RecoilType = 0
-SWEP.Text = 0
 
 function SWEP:PrimaryAttack()
 	if ( self.ShootsOnlyInIron == true || shootOnlyInIron == 1 ) and self.Iron == 0 then return end
@@ -368,20 +367,6 @@ function SWEP:PrimaryAttack()
 			if self.Hot >= self.Primary.ClipSize * 2 and self.HotActivity == 0 then
 				self.HotActivity = 1
 				self.Owner:EmitSound( "TooSimpleBase.Hot" )
-				self.TextTimer = CurTime() + 2.5
-				self.Text = 1
-				self.Weapon:SetNWString( "overheated_eng", 1 )
-				if ( self.language:GetString() == "ru" ) then
-					self.Weapon:SetNWString( "overheated_ru", 1 )
-				end
-			end
-			if self.Hot == self.Primary.ClipSize and self.HotActivity == 0 then
-				self.TextTimer = CurTime() + 3
-				self.Text = 1
-				self.Weapon:SetNWString( "will_overheat_eng", 1 )
-				if ( self.language:GetString() == "ru" ) then
-					self.Weapon:SetNWString( "will_overheat_ru", 1 )
-				end
 			end
 		end
 		self.Jam = math.Rand( 0, 100 )
@@ -390,59 +375,29 @@ function SWEP:PrimaryAttack()
 				if self.Jam <= 0.75 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
-					self.TextTimer = CurTime() + 2.5
-					self.Text = 1
-					self.Weapon:SetNWString( "jam_eng", 1 )
-					if ( self.language:GetString() == "ru" ) then
-						self.Weapon:SetNWString( "jam_ru", 1 )
-					end
 				end
 			end
 			if self.Primary.Ammo == "ar2" or self.Primary.Ammo == "smg1" then
 				if self.Jam <= 0.8 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
-					self.TextTimer = CurTime() + 2.5
-					self.Text = 1
-					self.Weapon:SetNWString( "jam_eng", 1 )
-					if ( self.language:GetString() == "ru" ) then
-						self.Weapon:SetNWString( "jam_ru", 1 )
-					end
 				end
 			end
 			if self.Primary.Ammo == "357" or self.Primary.Ammo == "SniperPenetratedRound" then
 				if self.Jam <= 0.85 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
-					self.TextTimer = CurTime() + 2.5
-					self.Text = 1
-					self.Weapon:SetNWString( "jam_eng", 1 )
-					if ( self.language:GetString() == "ru" ) then
-						self.Weapon:SetNWString( "jam_ru", 1 )
-					end
 				end
 			end
 			if self.Primary.Ammo == "buckshot" then
 				if self.Jam <= 0.65 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
-					self.TextTimer = CurTime() + 2.5
-					self.Text = 1
-					self.Weapon:SetNWString( "jam_eng", 1 )
-					if ( self.language:GetString() == "ru" ) then
-						self.Weapon:SetNWString( "jam_ru", 1 )
-					end
 				end
 				else
 				if self.Jam <= 0.7 and self.Weapon:Clip1() > 0 then
 					self.Owner:EmitSound( "TooSimpleBase.Jam" )
 					self.JamActive = 1
-					self.TextTimer = CurTime() + 2.5
-					self.Text = 1
-					self.Weapon:SetNWString( "jam_eng", 1 )
-					if ( self.language:GetString() == "ru" ) then
-						self.Weapon:SetNWString( "jam_ru", 1 )
-					end
 				end
 			end
 		end
@@ -595,24 +550,12 @@ function SWEP:CanPrimaryAttack()
 		self.Owner:EmitSound( "TooSimpleBase.Alert" )
 		self:SetNextPrimaryFire( CurTime() + 1 )
 		self:SetNextSecondaryFire( CurTime() + 1 )
-		self.TextTimer = CurTime() + 2.5
-		self.Text = 1
-		self.Weapon:SetNWString( "jam_eng", 1 )
-		if ( self.language:GetString() == "ru" ) then
-			self.Weapon:SetNWString( "jam_ru", 1 )
-		end
 		return false
 	end
 	if self.HotActivity == 1 then
 		self.Owner:EmitSound( "TooSimpleBase.Hot" )
 		self:SetNextPrimaryFire( CurTime() + 1 )
 		self:SetNextSecondaryFire( CurTime() + 1 )
-		self.TextTimer = CurTime() + 2.5
-		self.Text = 1
-		self.Weapon:SetNWString( "overheated_eng", 1 )
-		if ( self.language:GetString() == "ru" ) then
-			self.Weapon:SetNWString( "overheated_ru", 1 )
-		end
 		return false
 	end
 	return true
@@ -796,21 +739,14 @@ function SWEP:Think()
 			self.Weapon:SetNWString( "Crosshair1", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 ) )
 			self.Weapon:SetNWString( "Crosshair2", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 - 7.5 ) )
 		end
-		self.BobScale = self.Weapon:GetNWString( "BobSway", 1.5 )
-		self.SwayScale = self.Weapon:GetNWString( "BobSway", 1.5 )
+		self.BobScale = self.Weapon:GetNWString( "BobSway", 1 )
+		self.SwayScale = self.Weapon:GetNWString( "BobSway", 1 )
 		if self.Owner:KeyDown( IN_USE ) and self.Owner:KeyPressed( IN_RELOAD ) and self.SwitchTo != nil then
 			self.UseFireMode = 1
 			self:FireMode()
 		end
 		if self.TextTimer <= CurTime() then
 			self.Weapon:SetNWInt( "text", "" )
-			self.Weapon:SetNWString("jam_ru",0)
-			self.Weapon:SetNWString("jam_eng",0)
-			self.Weapon:SetNWString("overheated_ru",0)
-			self.Weapon:SetNWString("overheated_eng",0)
-			self.Weapon:SetNWString("will_overheat_ru",0)
-			self.Weapon:SetNWString("will_overheat_eng",0)
-			self.Text = 0
 		end
 		if self.Sprint == 0 and self.Reloading == 0 and self.ReloadShot == 0 and self.Iron == 0 then
 			if self.Owner:KeyDown( IN_DUCK ) and self.ViewModelFlip == false then
