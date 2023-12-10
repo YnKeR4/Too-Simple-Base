@@ -38,8 +38,6 @@ SWEP.AutoSwitchTo 				= true	-- ты можешь удалить это
 SWEP.AutoSwitchFrom 			= true	-- ты можешь удалить это
 
 SWEP.HoldType 					= "shotgun"	-- pistol, revolver, smg, ar2, shotgun, rpg
---SWEP.HoldTypeIron 				= "rpg"	-- "revolver" для маленьких пушек или "rpg" для довольно больших пушек
---SWEP.HoldTypeSprint 			= "passive"	-- "normal" для маленьких пушек или "passive" для больших, если оружие может стрелять пока бегаете, то можно удалить это
 -- https://wiki.facepunch.com/gmod/Hold_Types
 SWEP.DrawCrosshair 				= false	-- false - чтобы использовать динмаический прицел, true - чтобы использовать дефолтный прицел из хл2 (по умолчанию false)
 SWEP.DrawAmmo 					= true	-- ты можешь удалить это (по умолчанию true)
