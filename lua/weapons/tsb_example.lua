@@ -43,8 +43,6 @@ SWEP.AutoSwitchTo 				= true	-- you can delete this (by default, it is true)
 SWEP.AutoSwitchFrom 			= true	-- you can delete this (by default, it is true)
 
 SWEP.HoldType 					= "pistol"	-- pistol, revolver, smg, ar2, shotgun, rpg
---SWEP.HoldTypeIron 				= "revolver"	-- "revolver" for the small guns or "rpg" for the big guns
---SWEP.HoldTypeSprint 			= "normal"	-- "normal" for the small guns or "passive" for the big guns, don't use it or delete this if your gun can shoot while you're running
 -- https://wiki.facepunch.com/gmod/Hold_Types
 SWEP.DrawCrosshair 				= false	-- false to use the dynamic crosshair, true to use the def crosshair, you can delete this
 SWEP.DrawAmmo 					= true	-- you can delete this (by default, it is true)
