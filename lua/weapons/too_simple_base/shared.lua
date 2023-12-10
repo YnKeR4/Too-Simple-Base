@@ -784,7 +784,7 @@ function SWEP:Think()
 			end
 			self.Primary.SpreadTimer = CurTime() + 0.1
 		end
-		if self.Idle == 0 and self.IdleTimer > CurTime() and self.IdleTimer < CurTime() + 0.25 and self.Iron == 0 then
+		if self.Idle == 0 and self.IdleTimer > CurTime() and self.IdleTimer < CurTime() and self.Iron == 0 then
 			self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
 			self.Idle = 1
 		end
@@ -808,8 +808,8 @@ function SWEP:Think()
 				self:SetRun( true, self.Owner )
 			end
 			if self.Owner:KeyDown( IN_DUCK ) and self.ViewModelFlip == true then
-				self.Pos = self.WalkPos * -1
-				self.Ang = self.WalkAng * -1
+				self.Pos = Vector( 0.75, -2, -1 )
+				self.Ang = self.WalkAng
 				self:SetRun( true, self.Owner )
 			end
 			if self.Owner:KeyReleased( IN_DUCK ) then
@@ -1054,9 +1054,7 @@ SWEP.Semi = false
 SWEP.Burst = false
 SWEP.TextTimer = CurTime()
 SWEP.UseFireMode = 0
-
---SWEP.HoldTypeSprint = ""
---SWEP.HoldTypeIron = ""
+SWEP.CustomScopePath = nil
 SWEP.Sprint = 0
 SWEP.RunPos = nil
 SWEP.RunAng = nil

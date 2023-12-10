@@ -89,7 +89,8 @@ SWEP.RunPos 					= Vector(-0.801, -18.894, -11.056)	-- delete it or write: nil, 
 SWEP.RunAng 					= Vector(70, -0.704, -0.704)	-- delete it or write: nil, if you don't want to use the sprint function
 -- SWEP Construction Kit is needed
 SWEP.ScopeTexture 				= 1	-- you can delete this
--- 0 - no scope texture, 1 - normal Scope, 2 - COD Style Scope, 3 - ACOG, 4 - Eotech
+-- 0 - no scope texture, 1 - normal Scope, 2 - COD Style Scope, 3 - ACOG, 4 - Eotech, 5 - own scope (without arcs), 6 - own scope (with arcs)
+SWEP.CustomScopePath 			= nil	-- path of your scope texture, if you use 5 or 6 value in ScopeTexture, you can delete this
 SWEP.IronTime 					= 0.3	-- time before aiming, you can delete this
 SWEP.IronFOVMult 				= 5	-- default value is 1.45, you can delete this
 
