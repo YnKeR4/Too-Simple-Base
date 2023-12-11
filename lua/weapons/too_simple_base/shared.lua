@@ -590,6 +590,15 @@ function SWEP:PrimaryAttack()
 			end
 		end
 	end
+	if self.MuzzleAtt != nil and self.MuzzleEffect != nil and forceDisableCustomE == 0 and (owner:IsNPC()) then
+		local FX = EffectData{}
+		local fx = EffectData()
+		fx:SetEntity(self.Weapon)
+		fx:SetOrigin(self.Owner:GetShootPos())
+		fx:SetNormal(self.Owner:GetAimVector())
+		fx:SetAttachment(self:LookupAttachment("muzzle"))
+		util.Effect(self.MuzzleEffect,fx)
+	end
 end
 
 SWEP.MuzzleEffect = nil
