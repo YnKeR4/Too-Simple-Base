@@ -28,6 +28,10 @@ if SERVER then
 		CreateConVar( "tsb_force_disable_overheating", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
 	end
 
+	if GetConVar( "tsb_damage_multi_npc" ) == nil then
+		CreateConVar( "tsb_damage_multi_npc", 1, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the overheat.", 1, 9999999999 )
+	end
+
 end
 
 sound.Add(
