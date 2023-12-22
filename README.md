@@ -9,7 +9,7 @@ The sequel of the AYS Base, simpler and can be managed by server
 * Dynamic hold types;
 * Almost all strings can be deleted, to compress the Lua code;
 * SWEP Construction Kit support;
-* Commands to manage the base (only in console);
+* Commands to manage the base (console and spawn menu);
 * Overheating System;
 * and other small improvements...
 
@@ -18,7 +18,7 @@ The sequel of the AYS Base, simpler and can be managed by server
 * and... is that all?
 
 ## Plans:
-* Add a settings menu
+* Add a settings menu (done)
 * Overheating System (done)
 * Custom functions support
 
