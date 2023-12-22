@@ -50,6 +50,36 @@ end
 
 cvars.AddChangeCallback("tsb_damage_multi", RefreshTheDmgMulti)
 
+local damageMultNPC = 1
+
+if GetConVar( "tsb_damage_multi_npc" ) == nil then
+	damageMultNPC = 1
+	else
+	damageMultNPC = GetConVar("tsb_damage_multi_npc"):GetFloat()
+	if damageMultNPC > 9999999999 then
+		damageMultNPC = 1
+	end
+	if damageMultNPC <= 0 then
+		damageMultNPC = 1
+	end
+end
+
+function RefreshTheDmgMultiNPC(cvar, previous, new)
+	if GetConVar( "tsb_damage_multi_npc" ) == nil then
+		damageMultNPC = 1
+		else
+		damageMultNPC = GetConVar("tsb_damage_multi_npc"):GetFloat()
+		if damageMultNPC > 9999999999 then
+			damageMultNPC = 1
+		end
+		if damageMultNPC <= 0 then
+			damageMultNPC = 1
+		end
+	end
+end
+
+cvars.AddChangeCallback("tsb_damage_multi_npc", RefreshTheDmgMultiNPC)
+
 local disableJamming = 0
 
 if GetConVar( "tsb_force_disable_jamming" ) == nil then
@@ -261,7 +291,7 @@ function SWEP:PrimaryAttack()
 		bullet.Spread = Vector( self.Primary.RealSpread, self.Primary.RealSpread, 0 )
 	end
 	if owner:IsNPC() then
-		bullet.Damage = self.Primary.Damage * damageMult / 2
+		bullet.Damage = self.Primary.Damage * damageMultNPC / 2
 		bullet.Spread = Vector( self.Primary.Spread / 100, self.Primary.Spread / 100, 0 )
 	end
 	bullet.AmmoType = self.Primary.Ammo
@@ -304,7 +334,11 @@ function SWEP:PrimaryAttack()
 		end
 	end
 	self.Shots = self.Shots + 1
-	self.ShotsTimer = CurTime() + 60 / self.Primary.RPM + 0.75
+	if self.Primary.RPM != nil then
+		self.ShotsTimer = CurTime() + 60 / self.Primary.RPM + 0.6
+		else
+		self.ShotsTimer = CurTime() + 0.75
+	end
 	if (!owner:IsNPC()) then
 		if overheatDisable == 0 then
 			if self.HotActivity == 0 then
