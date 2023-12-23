@@ -262,6 +262,10 @@ SWEP.RecoilStalkerHorz = 0
 SWEP.RecoilStalkerTimer = CurTime()
 SWEP.RecoilType = 0
 
+SWEP.Recoil = 0
+SWEP.RecoilTimer = CurTime()
+SWEP.RecoilDirection = 0
+
 function SWEP:PrimaryAttack()
 	if ( self.ShootsOnlyInIron == true || shootOnlyInIron == 1 ) and self.Iron == 0 then return end
 	local owner = self:GetOwner()
@@ -623,6 +627,13 @@ function SWEP:PrimaryAttack()
 				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.Primary.StrenghtRecoil * self.Shots / 2, 0, 0 ) )
 			end
 		end
+		if self.RecoilType == 3 then
+			if ( CLIENT || game.SinglePlayer() ) and IsFirstTimePredicted() then
+				self.Recoil = 1
+				self.RecoilTimer = CurTime() + 0.1
+				self.RecoilDirection = math.Rand( -0.1, 0.1 )
+			end
+		end
 	end
 	if self.MuzzleAtt != nil and self.MuzzleEffect != nil and forceDisableCustomE == 0 and (owner:IsNPC()) then
 		local FX = EffectData{}
@@ -733,7 +744,18 @@ end
 function SWEP:Think()
 	local owner = self:GetOwner()
 	if (!owner:IsNPC()) then
-		--and IsFirstTimePredicted()
+		if ( CLIENT || game.SinglePlayer() ) and IsFirstTimePredicted() and self.RecoilType == 3 then
+			if self.Recoil == 1 then
+				if self.Iron == 0 then
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -1 * self.Primary.StrenghtRecoil, self.RecoilDirection, 0 ) )
+					else
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -0.5 * self.Primary.StrenghtRecoil, self.RecoilDirection, 0 ) )
+				end
+			end
+			if self.Recoil == 1 and self.RecoilTimer <= CurTime() then
+				self.Recoil = 0
+			end
+		end
 		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 1 then
 			if self.RecoilStalker >= self.CamMaxAngle and IsFirstTimePredicted() then
 				self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0.25, 0, 0 ) )
