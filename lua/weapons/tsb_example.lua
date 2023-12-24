@@ -67,7 +67,8 @@ SWEP.Primary.NumberofShots 		= 2	-- bullets per shot, you can delete this (by de
 SWEP.Primary.RPM 				= 525	-- 60 / RPM = Delay between shots, you can delete this (it will use the sequence duration)
 
 SWEP.RecoilType 				= 0	-- you can delete this, by def it is 0
--- 0 - default simple recoil, 1 - S.T.A.L.K.E.R. recoil (WIP), 2 - dynamic recoil (and ViewPunch), 3 - smooth recoil (without ViewPunch)
+-- 0 - default simple recoil, 1 - S.T.A.L.K.E.R. recoil (WIP)
+-- 2 - dynamic recoil (and ViewPunch), 3 - smooth recoil (without ViewPunch), 4 - changing the bullet direction (like csgo or cs2)
 
 --[[	-- if you using 1 RecoilType
 SWEP.CamdDispersion 			= 0	-- strenght recoil
