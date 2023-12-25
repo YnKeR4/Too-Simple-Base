@@ -1,6 +1,8 @@
 
 hook.Add( "PopulateToolMenu", "TSBMenu", function()
-	spawnmenu.AddToolMenuOption( "Options", "Too Simple: Base", "tsb_menu", "Options", "", "", function( panel )
+	spawnmenu.AddToolMenuOption( "Options", "Too Simple: Base", "tsb_menu", "Server", "", "", function( panel )
+	
+		panel:ControlHelp("\nOnly for Server")
 	
 		panel:CheckBox("Disable: «Jamming»", "tsb_force_disable_jamming")
 		panel:CheckBox("Disable: «Overheating»", "tsb_force_disable_overheating")
