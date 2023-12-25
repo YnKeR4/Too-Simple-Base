@@ -12,24 +12,20 @@ if SERVER then
 		CreateConVar( "tsb_force_shoot_while_running", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the sprint function", 0, 1 )
 	end
 
-	if GetConVar( "tsb_force_disable_custom_effects" ) == nil then
-		CreateConVar( "tsb_force_disable_custom_effects", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the custom muzzle flashes", 0, 1 )
-	end
-
 	if GetConVar( "tsb_force_shoot_only_in_iron" ) == nil then
 		CreateConVar( "tsb_force_shoot_only_in_iron", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Shooting allowed only in iron sights", 0, 1 )
-	end
-
-	if GetConVar( "tsb_disable_text_at_spawn" ) == nil then
-		CreateConVar( "tsb_disable_text_at_spawn", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the text when the weapon is spawned.", 0, 1 )
 	end
 
 	if GetConVar( "tsb_force_disable_overheating" ) == nil then
 		CreateConVar( "tsb_force_disable_overheating", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
 	end
-
+	
 	if GetConVar( "tsb_damage_multi_npc" ) == nil then
-		CreateConVar( "tsb_damage_multi_npc", 1, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the overheat.", 1, 9999999999 )
+		CreateConVar( "tsb_damage_multi_npc", 1, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Same as tsb_damage_multi but for NPCs.", 1, 9999999999 )
+	end
+
+	if GetConVar( "tsb_spread_multi" ) == nil then
+		CreateConVar( "tsb_spread_multi", 1, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Base spread * the spread mult", 1, 9999999999 )
 	end
 
 end
