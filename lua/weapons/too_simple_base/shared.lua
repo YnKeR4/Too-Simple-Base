@@ -1741,7 +1741,7 @@ SWEP.Pos = Vector( 0, 0, 0 )
 SWEP.Angle = Vector( 0, 0, 0 )
 SWEP.WalkPos = Vector(-0.75, -2, -1)
 SWEP.WalkAng = Vector(0, 0, 0)
-SWEP.WalkAngMirrored = Vector( 0.75, -2, -1 )
+SWEP.WalkPosMirrored = Vector( 0.75, -2, -1 )
 SWEP.WalkAngMirrored = Vector(0, 0, 0)
 
 local RunSpeed = 0.25
