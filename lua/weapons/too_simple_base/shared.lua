@@ -897,8 +897,13 @@ function SWEP:Think()
 			self.Idle = 1
 		end
 		if SERVER and self.DrawCrosshair == false then
-			self.Weapon:SetNWString( "Crosshair1", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 ) )
-			self.Weapon:SetNWString( "Crosshair2", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 - 7.5 ) )
+			if self.Reloading == 0 and self.ReloadShot == 0 then
+				self.Weapon:SetNWString( "Crosshair1", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 ) )
+				self.Weapon:SetNWString( "Crosshair2", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 - 7.5 ) )
+				else
+				self.Weapon:SetNWString( "Crosshair1", 0 )
+				self.Weapon:SetNWString( "Crosshair2", 0 )
+			end
 		end
 		self.BobScale = self.Weapon:GetNWString( "BobSway", 1 )
 		self.SwayScale = self.Weapon:GetNWString( "BobSway", 1 )
@@ -1760,14 +1765,6 @@ end
  
 function SWEP:GetRun()
 	return self.Weapon:GetNWBool("Iron")
-end
-
-function SWEP:Ammo1()
-	return self:GetOwner():GetAmmoCount( self.Weapon:GetPrimaryAmmoType() )
-end
-
-function SWEP:Ammo2()
-	return self:GetOwner():GetAmmoCount( self.Weapon:GetSecondaryAmmoType() )
 end
 
 SWEP.MuzzleAtt = nil
