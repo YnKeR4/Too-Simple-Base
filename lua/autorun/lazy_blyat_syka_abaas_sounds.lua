@@ -26,6 +26,32 @@ if SERVER then
 
 end
 
+CreateClientConVar( "tsb_c_red", 124, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
+CreateClientConVar( "tsb_c_green", 252, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
+CreateClientConVar( "tsb_c_blue", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
+CreateClientConVar( "tsb_c_alpha", 75, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
+
+CreateClientConVar( "tsb_c_gap", 20, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
+CreateClientConVar( "tsb_c_length", 7.5, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
+
+CreateClientConVar( "tsb_c_dynam_disable", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
+
+sound.Add(
+{
+name = "TooSimpleBase.LowAmmo",
+channel = CHAN_STATIC,
+volume = 1.0,
+soundlevel = SNDLVL_TALKING,
+sound = "weapons/TSBase/LowAmmo.wav"
+})
+sound.Add(
+{
+name = "TooSimpleBase.LastAmmo",
+channel = CHAN_STATIC,
+volume = 1.0,
+soundlevel = SNDLVL_TALKING,
+sound = "weapons/TSBase/LastAmmo.wav"
+})
 sound.Add(
 {
 name = "TooSimpleBase.Empty",
