@@ -140,24 +140,6 @@ end
 
 cvars.AddChangeCallback("tsb_force_shoot_while_running", RefreshTheDisableSprintFunction)
 
-local shootOnlyInIron = 0
-
-if GetConVar( "tsb_force_shoot_only_in_iron" ) == nil then
-	shootOnlyInIron = 0
-	else
-	shootOnlyInIron = GetConVar("tsb_force_shoot_only_in_iron"):GetFloat()
-end
-
-function RefreshTheShootingInIron(cvar, previous, new)
-	if GetConVar( "tsb_force_shoot_only_in_iron" ) == nil then
-		shootOnlyInIron = 0
-		else
-		shootOnlyInIron = GetConVar("tsb_force_shoot_only_in_iron"):GetFloat()
-	end
-end
-
-cvars.AddChangeCallback("tsb_force_shoot_only_in_iron", RefreshTheShootingInIron)
-
 SWEP.language = ( GetConVar( "gmod_language" ) )
 SWEP.PrintName = nil
 SWEP.LuaName = ""
@@ -716,15 +698,13 @@ function SWEP:CanPrimaryAttack()
 		end
 		return false
 	end
-	if ( self.ShootsOnlyInIron == true || shootOnlyInIron == 1 ) and self.Iron == 0 then
-		return false
-	end
 	return true
 end
 
 SWEP.m_WeaponDeploySpeed = 1
 SWEP.Reloading = 0
 SWEP.ReloadingTimer = CurTime()
+SWEP.ReloadingTime = nil
 
 function SWEP:Reload()
 	if (!self:CanReload()) then return end
@@ -747,7 +727,11 @@ function SWEP:Reload()
 			self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 			self:SetNextSecondaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 			self.Reloading = 1
-			self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration() - 0.25
+			if self.ReloadingTime == nil then
+				self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration() - 0.25
+				else
+				self.ReloadingTimer = CurTime() + self.ReloadingTime
+			end
 		end
 	end
 	if self.ShotgunReload == true then
