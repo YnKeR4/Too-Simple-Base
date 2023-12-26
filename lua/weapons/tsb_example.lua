@@ -83,7 +83,7 @@ SWEP.MuzzleEffect 				= "tsb_universal_muzzle_flash"	-- you can delete this (by 
 -- "tsb_shotgun_muzzle", "tsb_muzzle_flash_X", "tsb_muzzle_flash_X_bright", "tsb_silenced_muzzle", "tsb_universal_muzzle_flash", "tsb_hl2style_muzzle_flash", "tsb_m9k_style_muzzle_flash"
 SWEP.SwitchTo 					= "Auto"	-- switch fire mode to: "Semi-Auto", "Auto", "Burst", you can delete this (by default, it is nil)
 -- !!!WARNING!!! for some unknown reason, the burst FireMode doesn't work
-SWEP.ShootsOnlyInIron 			= false	-- default bool is false, you can delete this
+SWEP.ReloadingTime 				= 1	-- reloading timer only for non-shotgun reloads, you can delete this (it will use the sequence duration)
 SWEP.IronSightsPos 				= Vector(-0.201, -5.026, -1.601)	-- delete it or write: nil, if you don't want to use the iron sights
 SWEP.IronSightsAng 				= Vector(0, 0, 0)	-- delete it or write: nil, if you don't want to use the iron sights
 SWEP.RunPos 					= Vector(-0.801, -18.894, -11.056)	-- delete it or write: nil, if you don't want to use the sprint function
