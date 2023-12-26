@@ -12,10 +12,6 @@ if SERVER then
 		CreateConVar( "tsb_force_shoot_while_running", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the sprint function", 0, 1 )
 	end
 
-	if GetConVar( "tsb_force_shoot_only_in_iron" ) == nil then
-		CreateConVar( "tsb_force_shoot_only_in_iron", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Shooting allowed only in iron sights", 0, 1 )
-	end
-
 	if GetConVar( "tsb_force_disable_overheating" ) == nil then
 		CreateConVar( "tsb_force_disable_overheating", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
 	end
