@@ -271,14 +271,26 @@ function SWEP:PrimaryAttack()
 				bullet.Dir = self.Owner:GetAimVector() - math.Rand( self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil, -1 * self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil )
 			end
 			if self.Primary.StrenghtRecoil == nil and self.Primary.ViewPunchUp != nil then
-				bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.06 - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.06
+				if self.Primary.ViewPunchUp <= 0 then
+					if self.Shots <= 12 then
+						bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * ( 0.005 * self.Shots ) + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * ( 0.005 * self.Shots )
+						else
+						bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * math.Rand( 0.05, 0.06 )  + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * math.Rand( 0.05, 0.06 )
+					end
+					else
+					bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.055 - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.055
+				end
 			end
 			else
 			if self.Primary.StrenghtRecoil != nil then
 				bullet.Dir = self.Owner:GetAimVector() - math.Rand( 0.5 * self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil, -0.5 * self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil )
 			end
 			if self.Primary.StrenghtRecoil == nil and self.Primary.ViewPunchUp != nil then
-				bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.03 - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.03
+				if self.Primary.ViewPunchUp <= 0 then
+					bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.04 + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.04
+					else
+					bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.04 - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.04
+				end
 			end
 		end
 	end
@@ -353,6 +365,14 @@ function SWEP:PrimaryAttack()
 		self.ShotsTimer = CurTime() + 60 / self.Primary.RPM + 0.6
 		else
 		self.ShotsTimer = CurTime() + 0.75
+	end
+	if SERVER then 
+		if self.Weapon:Clip1() <= math.Round( self.Primary.ClipSize * 0.2 ) and self.Weapon:Clip1() != 0 then
+			self.Owner:EmitSound( "TooSimpleBase.LowAmmo" )
+		end
+		if self.Weapon:Clip1() <= 0 then
+			self.Owner:EmitSound( "TooSimpleBase.LastAmmo" )
+		end
 	end
 	if (!owner:IsNPC()) then
 		if overheatDisable == 0 then
@@ -430,14 +450,14 @@ function SWEP:PrimaryAttack()
 					if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, -1 * self.Primary.StrenghtRecoil / 2, 0 ) )
 					end
-					if self.Primary.ViewPunchRight != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchRight * self.Shots, 0 ) )
 							else
 							self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchRight, 0 ) )
 						end
 					end
-					if self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchUp / 2 * self.Shots, 0 ) )
 							else
@@ -462,14 +482,14 @@ function SWEP:PrimaryAttack()
 					if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, self.Primary.StrenghtRecoil / 2, 0 ) )
 					end
-					if self.Primary.ViewPunchRight != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, self.Primary.ViewPunchRight * self.Shots, 0 ) )
 							else
 							self.Owner:ViewPunch( Angle( 0, self.Primary.ViewPunchRight, 0 ) )
 						end
 					end
-					if self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, self.Primary.ViewPunchUp / 2 * self.Shots, 0 ) )
 							else
@@ -517,14 +537,14 @@ function SWEP:PrimaryAttack()
 					if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, -1 * self.Primary.StrenghtRecoil / 4, 0 ) )
 					end
-					if self.Primary.ViewPunchRight != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchRight * self.Shots / 2, 0 ) )
 							else
 							self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchRight / 2, 0 ) )
 						end
 					end
-					if self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, -1 * self.Primary.ViewPunchUp / 3 * self.Shots, 0 ) )
 							else
@@ -549,14 +569,14 @@ function SWEP:PrimaryAttack()
 					if self.Primary.StrenghtRecoil != nil and self.RecoilType == 0 then
 						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0, self.Primary.StrenghtRecoil / 4, 0 ) )
 					end
-					if self.Primary.ViewPunchRight != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, self.Primary.ViewPunchRight * self.Shots / 2, 0 ) )
 							else
 							self.Owner:ViewPunch( Angle( 0, self.Primary.ViewPunchRight / 2, 0 ) )
 						end
 					end
-					if self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
+					if self.RecoilType != 2 and self.Primary.ViewPunchRight == nil and self.Primary.ViewPunchUp != nil then
 						if self.RecoilType == 2 then
 							self.Owner:ViewPunch( Angle( 0, self.Primary.ViewPunchUp / 3 * self.Shots, 0 ) )
 							else
@@ -587,7 +607,21 @@ function SWEP:PrimaryAttack()
 				end
 			end
 		end
-		--and IsFirstTimePredicted()
+		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 4 and self.Primary.ViewPunchRight != nil then
+			if self.Iron == 0 then
+				if self.Owner:KeyDown( IN_DUCK ) then
+					self.Owner:ViewPunch( Angle( 0, math.Rand( 0.8 * self.Primary.ViewPunchRight, -0.8 * self.Primary.ViewPunchRight ), 0 ) )
+					else
+					self.Owner:ViewPunch( Angle( 0, math.Rand( self.Primary.ViewPunchRight, -1 * self.Primary.ViewPunchRight ), 0 ) )
+				end
+				else
+				if self.Owner:KeyDown( IN_DUCK ) then
+					self.Owner:ViewPunch( Angle( 0, math.Rand( 0.625 * self.Primary.ViewPunchRight, -0.625 * self.Primary.ViewPunchRight ), 0 ) )
+					else
+					self.Owner:ViewPunch( Angle( 0, math.Rand( 0.5 * self.Primary.ViewPunchRight, -0.5 * self.Primary.ViewPunchRight ), 0 ) )
+				end
+			end
+		end
 		if ( CLIENT || game.SinglePlayer() ) and self.RecoilType == 1 then
 			self.RecoilStalkerTimer = CurTime() + self.CamRelaxSpeed
 			if self.CamdDispersionInc != nil then
@@ -645,9 +679,13 @@ function SWEP:PrimaryAttack()
 				end
 				else
 				if self.Iron == 0 then
-					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -0.2, 0, 0 ) )
+					if self.Shots <= 12 then
+						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( math.Rand( -0.07, -0.035 ), 0, 0 ) )
+						else
+						self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( math.Rand( -0.1, -0.05 ), 0, 0 ) )
+					end
 					else
-					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -0.1, 0, 0 ) )
+					self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( math.Rand( -0.07, -0.035 ), 0, 0 ) )
 				end
 			end
 		end
@@ -670,7 +708,7 @@ end
 SWEP.MuzzleEffect = nil
 
 function SWEP:CanPrimaryAttack()
-	if self.Weapon:Clip1() == 0 or self.FiresUnderwater == false and self.Owner:WaterLevel() == 3 or self.Reloading == 1 then
+	if self.Weapon:Clip1() == 0 or self.FiresUnderwater == false and self.Owner:WaterLevel() == 3 or self.ReloadingSeq > CurTime() then
 		self.Owner:EmitSound( "TooSimpleBase.Empty" )
 		self:SetNextPrimaryFire( CurTime() + 1 )
 		self:SetNextSecondaryFire( CurTime() + 1 )
@@ -704,6 +742,7 @@ end
 SWEP.m_WeaponDeploySpeed = 1
 SWEP.Reloading = 0
 SWEP.ReloadingTimer = CurTime()
+SWEP.ReloadingSeq = CurTime()
 SWEP.ReloadingTime = nil
 
 function SWEP:Reload()
@@ -711,7 +750,9 @@ function SWEP:Reload()
 	self.Owner:SetAnimation( PLAYER_RELOAD )
 	self.Primary.SpreadTimer = CurTime()
 	self.Idle = 0
-	self:IronDisabler()
+	if self.Sprint == 0 then
+		self:IronDisabler()
+	end
 	self.Owner:SetFOV( 0, 0.1 )
 	self.JamActive = 0
 	self.RecoilStalker = 0
@@ -724,6 +765,7 @@ function SWEP:Reload()
 		local owner = self:GetOwner()
 		if (!owner:IsNPC()) then
 			self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+			self.ReloadingSeq = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 			self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 			self:SetNextSecondaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 			self.Reloading = 1
@@ -768,6 +810,7 @@ end
 SWEP.ReloadShot = 0
 SWEP.ReloadShotTimer = CurTime()
 SWEP.ShotgunReload = false
+local disableDynamCross = GetConVar( "tsb_c_dynam_disable" ):GetInt()
 
 function SWEP:ShotRelDisable()
 	self.ReloadShot = 0
@@ -882,10 +925,10 @@ function SWEP:Think()
 						self.Primary.RealSpread = self.Primary.Spread / 150
 					end
 				end
-				if self.Owner:KeyDown( IN_FORWARD ) or self.Owner:KeyDown( IN_BACK ) or self.Owner:KeyDown( IN_MOVELEFT ) or self.Owner:KeyDown( IN_MOVERIGHT ) and !self.Owner:KeyDown( IN_SPEED ) and self.Primary.RealSpread <= self.Primary.Spread / 125 and self.Primary.SpreadTimer <= CurTime() then
+				if !self.Owner:KeyDown( IN_SPEED ) and !self.Owner:KeyDown( IN_DUCK ) and self.Primary.RealSpread <= self.Primary.Spread / 125 and self.Primary.SpreadTimer <= CurTime()  and ( self.Owner:KeyDown( IN_FORWARD ) || self.Owner:KeyDown( IN_BACK ) || self.Owner:KeyDown( IN_MOVELEFT ) || self.Owner:KeyDown( IN_MOVERIGHT ) ) then
 					self.Primary.RealSpread = self.Primary.Spread / 75
 				end
-				if !self.Owner:KeyDown( IN_DUCK ) and self.Owner:KeyDown( IN_SPEED ) and ( self.Owner:KeyDown( IN_FORWARD ) || self.Owner:KeyDown( IN_BACK ) || self.Owner:KeyDown( IN_MOVELEFT ) || self.Owner:KeyDown( IN_MOVERIGHT ) ) and self.Primary.SpreadTimer <= CurTime() then
+				if !self.Owner:KeyDown( IN_DUCK ) and self.Owner:KeyDown( IN_SPEED ) and self.Primary.SpreadTimer <= CurTime() and ( self.Owner:KeyDown( IN_FORWARD ) || self.Owner:KeyDown( IN_BACK ) || self.Owner:KeyDown( IN_MOVELEFT ) || self.Owner:KeyDown( IN_MOVERIGHT ) ) then
 					self.Primary.RealSpread = self.Primary.Spread / 50
 				end
 				if self.Owner:GetVelocity():Length() <= 100 and self.Primary.RealSpread > self.Primary.Spread / 25 then
@@ -912,12 +955,22 @@ function SWEP:Think()
 			self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 		end
 		if SERVER and self.DrawCrosshair == false then
-			if self.Reloading == 0 and self.ReloadShot == 0 then
-				self.Weapon:SetNWString( "Crosshair1", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 * spreadMulti ) )
-				self.Weapon:SetNWString( "Crosshair2", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * 20 * spreadMulti - 7.5 ) )
+			if disableDynamCross == 0 then
+				if self.Reloading == 0 and self.ReloadShot == 0 then
+					self.Weapon:SetNWString( "Crosshair1", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti ) )
+					self.Weapon:SetNWString( "Crosshair2", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti - GetConVar( "tsb_c_length" ):GetInt() ) )
+					else
+					self.Weapon:SetNWString( "Crosshair1", 0 )
+					self.Weapon:SetNWString( "Crosshair2", 0 )
+				end
 				else
-				self.Weapon:SetNWString( "Crosshair1", 0 )
-				self.Weapon:SetNWString( "Crosshair2", 0 )
+				if self.Reloading == 0 and self.ReloadShot == 0 then
+					self.Weapon:SetNWString( "Crosshair1", ( 1 * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti ) )
+					self.Weapon:SetNWString( "Crosshair2", ( 1 * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti - GetConVar( "tsb_c_length" ):GetInt() ) )
+					else
+					self.Weapon:SetNWString( "Crosshair1", 0 )
+					self.Weapon:SetNWString( "Crosshair2", 0 )
+				end
 			end
 		end
 		self.BobScale = self.Weapon:GetNWString( "BobSway", 1 )
@@ -1248,7 +1301,7 @@ function SWEP:DrawHUD()
 	if CLIENT then
 		local x = ScrW() / 2
 		local y = ScrH() / 2
-		surface.SetDrawColor( 124, 252, 0, 75 )
+		surface.SetDrawColor( GetConVar( "tsb_c_red" ):GetInt(), GetConVar( "tsb_c_green" ):GetInt(), GetConVar( "tsb_c_blue" ):GetInt(), GetConVar( "tsb_c_alpha" ):GetInt() )
 		surface.DrawLine( x - self.Weapon:GetNWString( "Crosshair1", 0 ), y, x - self.Weapon:GetNWString( "Crosshair2", 0 ), y )
 		surface.DrawLine( x + self.Weapon:GetNWString( "Crosshair1", 0 ), y, x + self.Weapon:GetNWString( "Crosshair2", 0 ), y )
 		surface.DrawLine( x, y - self.Weapon:GetNWString( "Crosshair1", 0 ), x, y - self.Weapon:GetNWString( "Crosshair2", 0 ) )
@@ -1730,14 +1783,14 @@ SWEP.WalkAngMirrored = Vector(0, 0, 0)
 
 local RunSpeed = 0.25
 
-function SWEP:GetViewModelPosition(EyePos, EyeAng)
+function SWEP:GetViewModelPosition( EyePos, EyeAng )
 	local owner = self:GetOwner()
 	if (owner:IsNPC()) then return end
 	if (not self.Pos) then return pos, ang end
 	local Mul = 1.0
 	local bSprint = self.Weapon:GetNWBool("Iron")
 	local Offset = self.Pos
-	if (bSprint != self.bLastRun) then
+	if ( bSprint != self.bLastRun ) then
 		self.bLastRun = bSprint
 		self.fRunSpeed = CurTime()
 	end
@@ -1747,14 +1800,14 @@ function SWEP:GetViewModelPosition(EyePos, EyeAng)
 	end
 	local Mul = 1.0
 	if (fRunSpeed > CurTime() - RunSpeed) then
-		Mul = math.Clamp((CurTime() - fRunSpeed) / RunSpeed, 0, 1)
+		Mul = math.Clamp( ( CurTime() - fRunSpeed ) / RunSpeed, 0, 1 )
 		if not bSprint then Mul = 1 - Mul end
 	end
 	if (self.Ang) then
         EyeAng = EyeAng * 1    
-		EyeAng:RotateAroundAxis(EyeAng:Right(), 	self.Ang.x * Mul)
-		EyeAng:RotateAroundAxis(EyeAng:Up(), 		self.Ang.y * Mul)
-		EyeAng:RotateAroundAxis(EyeAng:Forward(),   self.Ang.z * Mul)
+		EyeAng:RotateAroundAxis( EyeAng:Right(), 	self.Ang.x * Mul )
+		EyeAng:RotateAroundAxis( EyeAng:Up(), 		self.Ang.y * Mul )
+		EyeAng:RotateAroundAxis( EyeAng:Forward(),   self.Ang.z * Mul )
 	end
 	local Right 	= EyeAng:Right()
 	local Up 		= EyeAng:Up()
@@ -1765,18 +1818,18 @@ function SWEP:GetViewModelPosition(EyePos, EyeAng)
 	return EyePos, EyeAng
 end
 
-function SWEP:SetRun(b)
-	self.Weapon:SetNWBool("Iron", b)
+function SWEP:SetRun( b )
+	self.Weapon:SetNWBool( "Iron", b )
 end
  
 function SWEP:GetRun()
-	return self.Weapon:GetNWBool("Iron")
+	return self.Weapon:GetNWBool( "Iron" )
 end
 
 SWEP.MuzzleAtt = nil
 
 function SWEP:SecondaryAttack()
-	if self.IronSightsPos == nil and self.IronSightsAng == nil and IsValid(self:Secondary()) and IsValid(self:CanSecondary()) then
+	if self.IronSightsPos == nil and self.IronSightsAng == nil and IsValid( self:Secondary() ) and IsValid( self:CanSecondary() ) then
 		if (!self:CanSecondary()) then return end
 		self:Secondary()
 	end
