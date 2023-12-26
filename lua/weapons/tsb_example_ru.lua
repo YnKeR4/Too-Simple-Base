@@ -78,7 +78,7 @@ SWEP.MuzzleEffect 				= "tsb_shotgun_muzzle"	-- ты можешь удалить
 -- "tsb_shotgun_muzzle", "tsb_muzzle_flash_X", "tsb_muzzle_flash_X_bright", "tsb_silenced_muzzle", "tsb_universal_muzzle_flash", "tsb_hl2style_muzzle_flash", "tsb_m9k_style_muzzle_flash"
 SWEP.SwitchTo 					= nil	-- поменять режим огня на: "Semi-Auto", "Auto", "Burst", ты можешь удалить это
 -- !!!ВНИМАНИЕ!!! из-за какой-то неизвестной причины, огонь очередями не работает
-SWEP.ShootsOnlyInIron 			= false	-- стрелять ТОЛЬКО во время прицеливания, ты можешь удалить это (по умолчанию false)
+SWEP.ReloadingTime 				= nil	-- время перезарядки не для дробовиков, ты это можешь удалить
 --[[SWEP.IronSightsPos 				= Vector(-8.961, 0, 4.119)	-- удали или напиши nil, чтобы не использовать прицеливание
 SWEP.IronSightsAng 				= Vector(-0.301, 0, 0)	-- удали или напиши nil, чтобы не использовать прицеливание]]
 SWEP.RunPos 					= Vector(-4.261, -5.428, -7.6)	-- удали или напиши nil, чтобы можно было стрелять пока бегаешь
