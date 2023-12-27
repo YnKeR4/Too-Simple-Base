@@ -270,28 +270,35 @@ function SWEP:PrimaryAttack()
 			if self.Primary.StrenghtRecoil != nil then
 				bullet.Dir = self.Owner:GetAimVector() - math.Rand( self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil, -1 * self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil )
 			end
-			if self.Primary.StrenghtRecoil == nil and self.Primary.ViewPunchUp != nil then
+			if self.Primary.StrenghtRecoil == nil and self.Primary.ViewPunchUp != nil and ( !owner:IsNPC() ) then
 				if self.Primary.ViewPunchUp <= 0 then
 					if self.Shots <= 12 then
-						bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * ( 0.005 * self.Shots ) + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * ( 0.005 * self.Shots )
+						bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * ( 0.006 * self.Shots ) + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * ( 0.006 * self.Shots )
 						else
-						bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * math.Rand( 0.05, 0.06 )  + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * math.Rand( 0.05, 0.06 )
+						bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.06  + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.06
 					end
 					else
-					bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.055 - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.055
+					if self.Shots <= 12 then
+						bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * ( 0.006 * self.Shots ) - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * ( 0.006 * self.Shots )
+						else
+						bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.06 - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.06
+					end
 				end
 			end
 			else
 			if self.Primary.StrenghtRecoil != nil then
 				bullet.Dir = self.Owner:GetAimVector() - math.Rand( 0.5 * self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil, -0.5 * self.Owner:EyeAngles():Right() * self.Primary.StrenghtRecoil - self.Owner:EyeAngles():Up() * self.Primary.StrenghtRecoil )
 			end
-			if self.Primary.StrenghtRecoil == nil and self.Primary.ViewPunchUp != nil then
+			if self.Primary.StrenghtRecoil == nil and self.Primary.ViewPunchUp != nil and ( !owner:IsNPC() ) then
 				if self.Primary.ViewPunchUp <= 0 then
 					bullet.Dir = self.Owner:GetAimVector() + self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.04 + self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.04
 					else
 					bullet.Dir = self.Owner:GetAimVector() - self.Owner:EyeAngles():Right() * self.Owner:GetViewPunchAngles().y * 0.04 - self.Owner:EyeAngles():Up() * self.Owner:GetViewPunchAngles().x * 0.04
 				end
 			end
+		end
+		if ( owner:IsNPC() ) and self.Primary.StrenghtRecoil == nil then
+			bullet.Dir = self.Owner:GetAimVector() - math.Rand( self.Owner:EyeAngles():Right() * -0.06 - self.Owner:EyeAngles():Up() * -0.06, self.Owner:EyeAngles():Right() * 0.06 - self.Owner:EyeAngles():Up() * 0.06 )
 		end
 	end
 	if self.ShowTracerInXChance != nil then
@@ -1387,6 +1394,15 @@ function SWEP:Deploy()
 		self.Reloading = 0
 		self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 		self:SetWeaponHoldType( self.HoldType )
+		if ( SERVER ) then
+			if self.HoldType == "pistol" or self.HoldType == "revolver" then
+				self.Owner:SetWalkSpeed( self.Owner:GetWalkSpeed() / 1.5 )
+				self.Owner:SetRunSpeed( self.Owner:GetRunSpeed() / 1.5 )
+				else
+				self.Owner:SetWalkSpeed( self.Owner:GetWalkSpeed() / 2 )
+				self.Owner:SetRunSpeed( self.Owner:GetRunSpeed() / 2 )
+			end
+		end
 		else
 		local ar2Hold = "ar2"
 		if self.HoldType == "crossbow" or self.HoldType == "rpg" or ( self.HoldType == "shotgun" and self.Primary.Ammo != "buckshot" ) then
