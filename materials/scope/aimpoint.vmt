@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+$baseTexture scope\aimpoint
+$model 		1
+$translucent	1
+$ignorez		1
+$nofog		1
+$alpha		1
+}
