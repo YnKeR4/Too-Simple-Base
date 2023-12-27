@@ -963,7 +963,7 @@ function SWEP:Think()
 		end
 		if SERVER and self.DrawCrosshair == false then
 			if disableDynamCross == 0 then
-				if self.Reloading == 0 and self.ReloadShot == 0 then
+				if self.Reloading == 0 and self.ReloadShot == 0 and self.Iron == 0 and self.Sprint == 0 and self.DrawCrosshair == false then
 					self.Weapon:SetNWString( "Crosshair1", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti ) )
 					self.Weapon:SetNWString( "Crosshair2", ( ( self.Primary.RealSpread + self.Primary.Spread / 45 ) / ( self.Primary.Spread / 45  ) * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti - GetConVar( "tsb_c_length" ):GetInt() ) )
 					else
@@ -971,7 +971,7 @@ function SWEP:Think()
 					self.Weapon:SetNWString( "Crosshair2", 0 )
 				end
 				else
-				if self.Reloading == 0 and self.ReloadShot == 0 then
+				if self.Reloading == 0 and self.ReloadShot == 0 and self.Iron == 0 and self.Sprint == 0 and self.DrawCrosshair == false then
 					self.Weapon:SetNWString( "Crosshair1", ( 1 * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti ) )
 					self.Weapon:SetNWString( "Crosshair2", ( 1 * GetConVar( "tsb_c_gap" ):GetInt() * spreadMulti - GetConVar( "tsb_c_length" ):GetInt() ) )
 					else
@@ -1053,7 +1053,7 @@ function SWEP:Think()
 		if self.IronIn == 1 and self.IronTimer <= CurTime() then
 			self.Weapon:SetNWString( "MouseSensitivity", 1 / ( self.IronFOVMult + 1.25 ) )
 			self.Owner:SetFOV( self.Owner:GetFOV() / self.IronFOVMult, self.IronTime / 2 )
-			self.Weapon:SetNWString( "BobSway", 0.125 )
+			self.Weapon:SetNWString( "BobSway", 0.1 )
 			self.Pos = self.IronSightsPos
 			self.Ang = self.IronSightsAng
 			self:SetRun( true, self.Owner )
@@ -1069,6 +1069,9 @@ function SWEP:Think()
 			end
 			if self.ScopeTexture == 4 then
 				self.Weapon:SetNWString( "eotech_sight", 1 )
+			end
+			if self.ScopeTexture == 5 then
+				self.Weapon:SetNWString( "aimpoint", 1 )
 			end
 		end
 		if self.IronIn == 2 and self.IronTimer <= CurTime() then
@@ -1263,6 +1266,7 @@ function SWEP:IronDisabler()
 	self.Weapon:SetNWString( "typical_scope", 0 )
 	self.Weapon:SetNWString( "scope_math", 0 )
 	self.Weapon:SetNWString( "gdcw_acog", 0 )
+	self.Weapon:SetNWString( "aimpoint", 0 )
 end
 
 function SWEP:DrawHUD()
@@ -1278,7 +1282,7 @@ function SWEP:DrawHUD()
 		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.SetDrawColor(255,255,255,self.Weapon:GetNWString("typical_scope",0))
-		surface.SetTexture( surface.GetTextureID( "scope/scope_lens" ) )
+		surface.SetTexture( surface.GetTextureID( "scope/scope_dirty2" ) )
 		surface.DrawTexturedRect( ( ScrW() - ScrH() ) / 2, 0, ScrH(), ScrH() )
 		surface.SetTexture( surface.GetTextureID( "scope/scope_default" ) )
 		surface.DrawTexturedRect( ( ScrW() - ScrH() * 1 ) / 2, 0, ScrH() * 1, ScrH() )
@@ -1303,8 +1307,18 @@ function SWEP:DrawHUD()
 		surface.SetTexture( surface.GetTextureID( "scope/scope1" ) )
 		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
+		surface.SetDrawColor(255,255,255,self.Weapon:GetNWString("aimpoint",0))
+		surface.SetTexture( surface.GetTextureID( "scope/aimpoint_dirty" ) )
+		surface.DrawTexturedRect( ( ScrW() - ScrH() ) / 2, 0, ScrH(), ScrH() )
+		surface.SetTexture( surface.GetTextureID( "scope/aimpoint" ) )
+		surface.DrawTexturedRect( ScrW() / 2 - ScrH() / 64, ScrH() * 31 / 64, ScrH() / 32, ScrH() / 32 )
+		surface.SetTexture( surface.GetTextureID( "scope/scope_arc" ) )
+		surface.DrawTexturedRect( ( ScrW() - ScrH() * 1 ) / 2, 0, ScrH() * 1, ScrH() )
+		surface.SetTexture( surface.GetTextureID( "scope/scope1" ) )
+		surface.DrawTexturedRect( 0, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
+		surface.DrawTexturedRect( ScrH() + ( ScrW() - ScrH() * 1 ) / 2, 0, ( ScrW() - ScrH() * 1 ) / 2, ScrH() )
 	end
-	if (owner:IsNPC()) or self.Iron == 1 or self.Sprint == 1 or self.ShootsOnlyInIron == true or shootOnlyInIron == 1 or self.DrawCrosshair == true or self.Text == 1 then return end
+	if (owner:IsNPC()) then return end
 	if CLIENT then
 		local x = ScrW() / 2
 		local y = ScrH() / 2
