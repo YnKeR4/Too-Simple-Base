@@ -1,41 +1,3 @@
-if SERVER then
-
-	if GetConVar( "tsb_damage_multi" ) == nil then
-		CreateConVar( "tsb_damage_multi", 1, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Base damage * the damage mult", 1, 9999999999 )
-	end
-
-	if GetConVar( "tsb_force_disable_jamming" ) == nil then
-		CreateConVar( "tsb_force_disable_jamming", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the jamming system", 0, 1 )
-	end
-
-	if GetConVar( "tsb_force_shoot_while_running" ) == nil then
-		CreateConVar( "tsb_force_shoot_while_running", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the sprint function", 0, 1 )
-	end
-
-	if GetConVar( "tsb_force_disable_overheating" ) == nil then
-		CreateConVar( "tsb_force_disable_overheating", 0, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
-	end
-	
-	if GetConVar( "tsb_damage_multi_npc" ) == nil then
-		CreateConVar( "tsb_damage_multi_npc", 1, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Same as tsb_damage_multi but for NPCs.", 1, 9999999999 )
-	end
-
-	if GetConVar( "tsb_spread_multi" ) == nil then
-		CreateConVar( "tsb_spread_multi", 1, { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Base spread * the spread mult", 1, 9999999999 )
-	end
-
-end
-
-CreateClientConVar( "tsb_c_red", 124, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
-CreateClientConVar( "tsb_c_green", 252, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
-CreateClientConVar( "tsb_c_blue", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
-CreateClientConVar( "tsb_c_alpha", 75, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
-
-CreateClientConVar( "tsb_c_gap", 20, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
-CreateClientConVar( "tsb_c_length", 7.5, { FCVAR_ARCHIVE, FCVAR_REPLICATED } )
-
-CreateClientConVar( "tsb_c_dynam_disable", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
-
 sound.Add(
 {
 name = "TooSimpleBase.LowAmmo",
@@ -58,7 +20,7 @@ name = "TooSimpleBase.Empty",
 channel = CHAN_STATIC,
 volume = 1.0,
 soundlevel = SNDLVL_TALKING,
-sound = "weapons/TSBase/Empty.ogg"
+sound = "weapons/TSBase/Empty.wav"
 })
 sound.Add(
 {
@@ -74,7 +36,7 @@ name = "TooSimpleBase.FireMode",
 channel = CHAN_STATIC,
 volume = 1.0,
 soundlevel = SNDLVL_TALKING,
-sound = "weapons/TSBase/FireMode.ogg"
+sound = "weapons/TSBase/FireMode.wav"
 })
 sound.Add(
 {

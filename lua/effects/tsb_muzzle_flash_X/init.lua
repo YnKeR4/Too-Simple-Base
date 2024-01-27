@@ -31,6 +31,17 @@ particle:SetRoll(0)
 particle:SetRollDelta(math.Rand(-1,1))
 particle:SetColor(255,255,255)	
 end
+local dlight = DynamicLight( LocalPlayer():EntIndex() )
+if dlight then
+dlight.pos = self.Position
+dlight.r = 255
+dlight.g = 125
+dlight.b = 0
+dlight.brightness = math.random( 1, 5 )
+dlight.Decay = 1000
+dlight.Size = math.random( 50, 100 )
+dlight.DieTime = CurTime() + 0.055
+end
 emitter:Finish()
 end
 

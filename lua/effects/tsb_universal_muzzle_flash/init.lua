@@ -31,6 +31,32 @@ particle:SetRoll(math.Rand(180,480))
 particle:SetRollDelta(math.Rand(-1,1))
 particle:SetColor(255,255,255)	
 end
+local dlight = DynamicLight( LocalPlayer():EntIndex() )
+if dlight then
+dlight.pos = self.Position
+dlight.r = 255
+dlight.g = 125
+dlight.b = 0
+dlight.brightness = math.random( 1, 5 )
+dlight.Decay = 1000
+dlight.Size = math.random( 50, 100 )
+dlight.DieTime = CurTime() + 0.055
+end
+for i = 1,15 do
+local spark = emitter:Add("effects/spark", self.Position+data:GetNormal()*8)
+spark:SetStartAlpha(255)
+spark:SetEndAlpha(0)
+spark:SetCollide(false)
+spark:SetBounce(math.Rand(0,1))
+spark:SetColor(255,150,100)
+spark:SetGravity(Vector(0,0,-600))
+spark:SetEndLength(0)
+spark:SetEndSize(math.Rand(0.5, 1))
+spark:SetStartSize(math.Rand(0.5, 1))
+spark:SetStartLength(math.Rand(5,10))
+spark:SetDieTime(math.Rand(0, 0.1))
+spark:SetVelocity((data:GetNormal()*math.Rand(150, 300)+VectorRand()*200)*0.5)
+end
 emitter:Finish()
 end
 
