@@ -12,6 +12,7 @@ if SERVER then
 	CreateConVar( "tsb_force_disable_iron_sights", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
 	CreateConVar( "tsb_enable_infinity_clipsize", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 2 )
 	CreateConVar( "tsb_force_disable_crosshair", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
+	CreateConVar( "tsb_force_disable_overheat_smoke", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Disable the overheat.", 0, 1 )
 
 end
 
@@ -32,8 +33,8 @@ CreateClientConVar( "tsb_vm_x", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateClientConVar( "tsb_vm_z", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateClientConVar( "tsb_vm_recoil_pos", 1.5, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateClientConVar( "tsb_vm_recoil_ang", -0.125, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
-CreateClientConVar( "tsb_force_disable_viewpunchroll", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateClientConVar( "tsb_vm_bob", 1, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
+CreateClientConVar( "tsb_disable_overheat_smoke", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 
 hook.Add( "PopulateToolMenu", "TSBMenu", function()
 
@@ -48,6 +49,7 @@ hook.Add( "PopulateToolMenu", "TSBMenu", function()
 		panel:CheckBox( "By Force: Disable Auto Reload", "tsb_force_disable_auto_reload" )
 		panel:CheckBox( "By Force: Can shoot while running", "tsb_force_shoot_while_running" )
 		panel:CheckBox( "By Force: Disable Crosshair (requires restart/reload)", "tsb_force_disable_crosshair" )
+		panel:CheckBox( "By Force: Disable Overheat Smoke", "tsb_force_disable_overheat_smoke" )
 		
 		local infinityClipSize, label = panel:ComboBox( "Infinity Clip Size", "tsb_enable_infinity_clipsize" )
 		infinityClipSize:AddChoice( "Disable", 0, false )
@@ -60,10 +62,20 @@ hook.Add( "PopulateToolMenu", "TSBMenu", function()
 		
 	end )
 	
-	spawnmenu.AddToolMenuOption( "Options", "Too Simple: Base", "tsb_menu_client", "Client", "", "", function( panel )
+	spawnmenu.AddToolMenuOption( "Options", "Too Simple: Base", "tsb_menu_client_other", "Other", "", "", function( panel )
+		
+		panel:CheckBox( "Disable: Overheat Smoke", "tsb_disable_overheat_smoke" )
+		panel:CheckBox( "Disable: Text", "tsb_disable_text" )
+		panel:CheckBox( "Enable: Auto Reload", "tsb_enable_auto_reload" )
+		panel:CheckBox( "Enable: Muzzle Flash in Scope", "tsb_hide_muzzleflash_while_aiming" )
+		panel:NumSlider( "Camera Bobbing Multiplier", "tsb_bobbing", 0, 5, 0 )
+		
+		panel:ControlHelp( "\nThe Camera Bobbing feature is not fully finalized!" )
+		panel:ControlHelp( "\nRecommended to set it to 0" )
 	
-		panel:ControlHelp( "\nOnly for You" )
-		panel:ControlHelp( "\nCrosshair" )
+	end )
+	
+	spawnmenu.AddToolMenuOption( "Options", "Too Simple: Base", "tsb_menu_client_crosshair", "Crosshair", "", "", function( panel )
 		
 		panel:AddControl( "Color", {
 		
@@ -76,35 +88,23 @@ hook.Add( "PopulateToolMenu", "TSBMenu", function()
 			
 		} )
 		
-		panel:NumSlider( "The Gap", "tsb_c_gap", 1, 200, 1 )
-		panel:NumSlider( "The Lenght", "tsb_c_length", 1, 200, 1 )
-		panel:NumSlider( "The Following Multiplier", "tsb_crosshair_and_recoil_scale", 0, 10, 1 )
+		panel:NumSlider( "The Gap", "tsb_c_gap", 1, 200, 0 )
+		panel:NumSlider( "The Lenght", "tsb_c_length", 1, 200, 0 )
+		panel:NumSlider( "The Following Multiplier", "tsb_crosshair_and_recoil_scale", 0, 10, 0 )
 		panel:CheckBox( "Static Crosshair (requires restart/reload)", "tsb_c_dynam_disable" )
+	
+	end )
+	
+	spawnmenu.AddToolMenuOption( "Options", "Too Simple: Base", "tsb_menu_client_viewmodel", "ViewModel", "", "", function( panel )
 		
-		panel:ControlHelp( "\n--------------" )
+		panel:NumSlider( "X", "tsb_vm_x", -10, 10, 0 )
+		panel:NumSlider( "Y", "tsb_vm_y", -10, 10, 0 )
+		panel:NumSlider( "Z", "tsb_vm_z", -10, 10, 0 )
 		
-		panel:ControlHelp( "\nViewModel" )
-		
-		panel:NumSlider( "X", "tsb_vm_x", -10, 10, 1 )
-		panel:NumSlider( "Y", "tsb_vm_y", -10, 10, 1 )
-		panel:NumSlider( "Z", "tsb_vm_z", -10, 10, 1 )
-		
-		panel:NumSlider( "Bob Multiplier", "tsb_vm_bob", -5, 5, 1 )
+		panel:NumSlider( "Bob Multiplier", "tsb_vm_bob", -5, 5, 0 )
 		
 		panel:NumSlider( "Recoil Tracking Pos", "tsb_vm_recoil_pos", -5, 5, 1 )
 		panel:NumSlider( "Recoil Tracking Ang", "tsb_vm_recoil_ang", -5, 5, 1 )
-		
-		panel:ControlHelp( "\n--------------" )
-		
-		panel:ControlHelp( "\nOther" )
-		
-		panel:CheckBox( "Disable: ViewPunh Roll", "tsb_force_disable_viewpunchroll" )
-		panel:CheckBox( "Disable: Text", "tsb_disable_text" )
-		panel:CheckBox( "Enable: Auto Reload", "tsb_enable_auto_reload" )
-		panel:NumSlider( "Camera Bobbing Multiplier", "tsb_bobbing", 0, 5, 1 )
-		
-		panel:ControlHelp( "\nThe camera bobbing feature is not fully finalized!" )
-		panel:ControlHelp( "\nRecommended to set it to 0" )
 	
 	end )
 	

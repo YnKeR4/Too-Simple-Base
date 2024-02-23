@@ -87,7 +87,7 @@ SWEP.Primary.RPM 				= 525	-- 60 / RPM = Delay between shots
 
 SWEP.RecoilType 				= 0	-- you can delete this, by def it is 0
 -- 0 - default simple recoil, 1 - S.T.A.L.K.E.R. recoil
--- 2 - dynamic recoil (and ViewPunch), 3 - smooth recoil, 4 - changing the bullet direction (like csgo or cs2)
+-- 2 - dynamic recoil (and ViewPunch), 3 - smooth recoil
 -- 5 - the recoil returns to its original position
 
 --------------------
@@ -95,8 +95,7 @@ SWEP.RecoilType 				= 0	-- you can delete this, by def it is 0
 --------------------
 
 SWEP.Primary.ViewPunchUp 		= 1.031	-- up/down, you can delete this
-SWEP.Primary.ViewPunchRight 	= 0.6535	-- right/left, you can delete this (autocal)
-SWEP.Primary.ViewPunchRoll 		= 2.232	-- what? you can delete this (autocal)
+SWEP.Primary.ViewPunchRight 	= 0.6535	-- right/left, you can delete this
 SWEP.ResetViewPunch 			= true	-- reset view punch after shot, true/false, you can delete this
 
 --------------------------------
